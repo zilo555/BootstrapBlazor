@@ -50,23 +50,6 @@ public sealed partial class SignaturePads
         return Task.CompletedTask;
     } 
 
-    ///// <summary>
-    ///// 获得属性方法
-    ///// </summary>
-    ///// <returns></returns>
-    //private IEnumerable<AttributeItem> GetAttributes() => new AttributeItem[]
-    //{
-    //    new AttributeItem("EnableSaveBase64Btn","启用保存为base64按钮",  "true","bool") ,
-    //    new AttributeItem("EnableSavePNGBtn","启用保存为PNG按钮文本",  "false","bool") ,
-    //    new AttributeItem("EnableSaveJPGBtn","启用保存为JPG按钮文本",  "false","bool") ,
-    //    new AttributeItem("EnableSaveSVGBtn","启用保存为SVG按钮文本",  "false","bool") ,
-
-    //    new AttributeItem("CssClass","组件CSS式样",  "signature-pad-body") ,
-    //    new AttributeItem("BtnCssClass","按钮CSS式样",  "btn btn-light") ,
-    //    new AttributeItem("Responsive","响应式css界面,为所有用户设计最佳体验",  "false","bool") ,
-    //    new AttributeItem("BackgroundColor","组件背景",  "rgb(255, 255, 255),设置 rgba(0,0,0,0)为透明") ,
-    //};
-
     /// <summary>
     /// 获得属性方法
     /// </summary>
@@ -98,7 +81,7 @@ public sealed partial class SignaturePads
         new AttributeItem() {
             Name = "OnClose",
             Description = "手写签名关闭信息回调",
-            Type = "Func<string, Task>?",
+            Type = "Func<Task>?",
             ValueList = " — ",
             DefaultValue = " — "
         },
@@ -122,13 +105,6 @@ public sealed partial class SignaturePads
             Type = "string",
             ValueList = " — ",
             DefaultValue = "请先签名"
-        },
-        new AttributeItem() {
-            Name = "ChangeColorBtnTitle",
-            Description = "换颜色按钮文本",
-            Type = "string",
-            ValueList = " — ",
-            DefaultValue = "换颜色"
         },
         new AttributeItem() {
             Name = "ChangeColorBtnTitle",
@@ -185,6 +161,62 @@ public sealed partial class SignaturePads
             Type = "bool",
             ValueList = " — ",
             DefaultValue = "true"
+        },
+        new AttributeItem() {
+            Name = "EnableSaveBase64Btn",
+            Description = "启用保存为 base64",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "true"
+        },
+        new AttributeItem() {
+            Name = "EnableSavePNGBtn",
+            Description = "启用保存为 PNG",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem() {
+            Name = "EnableSaveJPGBtn",
+            Description = "启用保存为 JPG",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem() {
+            Name = "EnableAlertJS",
+            Description = "启用保存为 SVG",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem() {
+            Name = "CssClass",
+            Description = "组件 CSS 式样",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = "signature-pad-body"
+        },
+        new AttributeItem() {
+            Name = "BtnCssClass",
+            Description = "按钮 CSS 式样",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = "btn btn-light"
+        },
+        new AttributeItem() {
+            Name = "Responsive",
+            Description = "启用响应式 css 界面",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem() {
+            Name = "BackgroundColor",
+            Description = "组件背景,设置 rgba(0,0,0,0)为透明",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = "rgb(255, 255, 255)"
         }
     };
 }
