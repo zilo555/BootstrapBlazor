@@ -16,13 +16,13 @@
   <ItemGroup>
     <PackageReference Include="BootstrapBlazor.Chart" Version="6.*" />
     <PackageReference Include="BootstrapBlazor.Markdown" Version="6.*" />
+    <PackageReference Include="BootstrapBlazor.SignaturePad" Version="6.0.0" />
     <PackageReference Include="BootstrapBlazor.TableExport" Version="6.*" />
     <PackageReference Include="System.Text.Json" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BootstrapBlazor\BootstrapBlazor.csproj" />
-    <ProjectReference Include="..\Extensions\Components\BootstrapBlazor.AxperiencePack\BootstrapBlazor.AxperiencePack.csproj" />
     <ProjectReference Include="..\Extensions\Components\BootstrapBlazor.AzureSpeech\BootstrapBlazor.AzureSpeech.csproj" />
   </ItemGroup>
 
