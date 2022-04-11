@@ -1,6 +1,6 @@
 ﻿@page "/signaturepads"
-@inject IStringLocalizer<SignaturePads> Localizer
 @namespace BootstrapBlazor.Shared.Samples
+@inject IStringLocalizer<SignaturePads> Localizer
 
 <h3>@Localizer["Title"]</h3>
 
@@ -21,84 +21,38 @@
 <div class="code-label">Package Manager</div>
 <Pre class="no-highlight">Install-Package BootstrapBlazor.SignaturePad</Pre>
 
-<DemoBlock Title="@Localizer["BaseUsageText"]" Name="Base" Introduction="">
-<pre>
-<code style="color:gray">
-&lt;SignaturePad OnResult="OnResult" BtnCssClass="btn btn-outline-success" /&gt;
-</code>
-</pre>
-
-    <SignaturePad OnResult="OnResult" />
-
-    @if (Result != null)
-    {
-        <div>
-            <p></p>
-            <p>@Localizer["ResultText"]</p>
-            <img src="@Result" style="background-color: beige ; max-width: 50%; " />
-            <p></p>
-            <p>@Localizer["ResultBase64Text"]</p>
-            <textarea type="text" class="form-control" style="min-width: 100px;max-width: 50%;" rows="4"
-                      @bind="Result"
-                      placeholder="Base64" />
+<DemoBlock Title="@Localizer["BaseUsageText"]" Introduction="@Localizer["BaseUsageIntro"]" Name="Normal">
+    <Pre>&lt;SignaturePad OnResult="OnResult" /&gt;</Pre>
+    <div class="row">
+        <div class="col-12 col-sm-6">
+            <div class="form-label">@Localizer["SignText"]</div>
+            <SignaturePad OnResult="OnResult" />
         </div>
-    }
+        <div class="col-12 col-sm-6">
+            @if (Result != null)
+            {
+                <div class="form-label">@Localizer["ResultText"]</div>
+                <img src="@Result" style="height: 240px; width: auto;" />
+                <div class="form-label">@Localizer["ResultBase64Text"]</div>
+                <textarea class="form-control" rows="4" @bind="Result" />
+            }
+        </div>
+    </div>
 </DemoBlock>
 
-<DemoBlock Title="@Localizer["ButtonCssStyleText"]" Name="ButtonCssStyle" Introduction="">
-    <pre>
-<code style="color:gray">
-&lt;SignaturePad OnResult="OnResult" BtnCssClass="btn btn-outline-success" /&gt;
-        </code>
-    </pre>
+<DemoBlock Title="@Localizer["ButtonCssStyleText"]" Introduction="@Localizer["ButtonCssStyleIntro"]" Name="ButtonCssStyle">
+    <Pre>&lt;SignaturePad OnResult="OnResult" BtnCssClass="btn btn-outline-success" /&gt;</Pre>
+    <div class="form-label">@Localizer["SignText"]</div>
     <SignaturePad OnResult="OnResult2" BtnCssClass="btn btn-outline-success" />
-
-    @if (Result2 != null)
-    {
-        <div>
-            <p>@Localizer["ResultText"]</p>
-            <img src="@Result2" style="background-color: beige ; max-width: 50%; " />
-        </div>
-    }
-
 </DemoBlock>
 
-<DemoBlock Title="@Localizer["CustomButtonText"]" Name="CustomButton" Introduction="">
-    <pre>
-    <code style="color:gray">
-&lt;SignaturePad OnResult="OnResult"
-        SignAboveLabel="Sign above"
-        UndoBtnTitle="Undo"
-        SaveBase64BtnTitle="OK"
-        ChangeColorBtnTitle="Change color"
-        ClearBtnTitle="Clear" /&gt;
-    </code>
-</pre>
-    <SignaturePad OnResult="OnResult3"
-                  SignAboveLabel="Sign above"
-                  UndoBtnTitle="Undo"
-                  SaveBase64BtnTitle="OK"
-                  ChangeColorBtnTitle="Change color"
-                  ClearBtnTitle="Clear" />
-
-    @if (Result3 != null)
-    {
-        <div>
-            <p>@Localizer["ResultText"]</p>
-            <img src="@Result3" style="background-color: beige ; max-width: 50%; " />
-        </div>
-    }
-
+<DemoBlock Title="@Localizer["CustomButtonText"]" Introduction="@Localizer["CustomButtonIntro"]" Name="CustomButton">
+    <Pre>&lt;SignaturePad OnResult="OnResult" SignAboveLabel="Sign above" UndoBtnTitle="Undo" SaveBase64BtnTitle="OK" ChangeColorBtnTitle="Change color" ClearBtnTitle="Clear" /&gt;</Pre>
+    <SignaturePad OnResult="OnResult3" SignAboveLabel="Sign above" UndoBtnTitle="Undo" SaveBase64BtnTitle="OK" ChangeColorBtnTitle="Change color" ClearBtnTitle="Clear" />
 </DemoBlock>
 
-<DemoBlock Title="@Localizer["ResponsiveInterfaceText"]" Name="ResponsiveInterface" Introduction="@Localizer["TipsResponsive"]">
-
-    <a class="btn btn-primary"
-       type="button"
-       href="signaturepadResponsive">
-        @Localizer["ResponsiveInterfaceText"]
-    </a>
-
+<DemoBlock Title="@Localizer["ResponsiveInterfaceText"]" Introduction="@Localizer["TipsResponsive"]" Name="ResponsiveInterface">
+    <a class="btn btn-primary" type="button" href="signaturepadResponsive">@Localizer["ResponsiveInterfaceText"]</a>
 </DemoBlock>
 
 <Tips>
