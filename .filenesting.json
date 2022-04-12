@@ -42,6 +42,10 @@
             ".sass",
             ".styl"
           ],
+          ".ts": [
+            ".cs",
+            ".razor"
+          ],
           ".html": [
             ".md",
             ".mdown",
