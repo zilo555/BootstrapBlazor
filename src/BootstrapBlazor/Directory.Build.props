@@ -1,6 +1,5 @@
 <Project>
 
-  <Import Project="TypeScriptConfig.props" />
   <Import Project="..\Directory.Build.props" />
   <Import Project="..\Frameworks.props" />
   <Import Project="..\bundleconfig.props" />
