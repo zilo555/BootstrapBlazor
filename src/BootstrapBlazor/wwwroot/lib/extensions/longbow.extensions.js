@@ -93,6 +93,15 @@
             while (document.getElementById(prefix));
             return prefix;
         },
+        bb_vibrate: function () {
+            if ('vibrate' in window.navigator) {
+                window.navigator.vibrate([200, 100, 200]);
+                var handler = window.setTimeout(function () {
+                    window.clearTimeout(handler);
+                    window.navigator.vibrate([]);
+                }, 1000);
+            }
+        },
         webClient: function (obj, url, method) {
             var data = {};
             var browser = new Browser();
