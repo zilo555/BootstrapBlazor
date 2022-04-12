@@ -1,0 +1,352 @@
+﻿@page "/floatings"
+
+<style type="text/css">
+    .container{
+        overflow: hidden;
+        position: relative;
+        tab-size: 4;
+        color-scheme: dark;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+        line-height: inherit;
+        color: rgb(220 223 236/var(--tw-text-opacity));
+        box-sizing: border-box;
+        border: 0 solid #bfc3d9;
+        display: grid;
+        height: 20rem;
+        width: 20rem;
+        place-items: center;
+        padding: .5rem;
+    }
+
+    .btn{
+        -webkit-text-size-adjust: 100%;
+        tab-size: 4;
+        color-scheme: dark;
+        -webkit-font-smoothing: antialiased;
+        box-sizing: border-box;
+        border: 0 solid #bfc3d9;
+        font-family: inherit;
+        font-size: 100%;
+        line-height: inherit;
+        color: inherit;
+        margin: 0;
+        text-transform: none;
+        -webkit-appearance: button;
+        background-color: transparent;
+        background-image: none;
+        cursor: pointer;
+        position: absolute;
+        padding: 1rem;
+        transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+        transition-duration: .15s;
+    }
+    .dot{
+        -webkit-text-size-adjust: 100%;
+        tab-size: 4;
+        color-scheme: dark;
+        -webkit-font-smoothing: antialiased;
+        font-family: inherit;
+        font-size: 100%;
+        line-height: inherit;
+        color: inherit;
+        text-transform: none;
+        cursor: pointer;
+        box-sizing: border-box;
+        border: 0 solid #bfc3d9;
+        height: 1.25rem;
+        width: 1.25rem;
+        border-radius: 9999px;
+        border-width: 2px;
+        border-style: solid;
+        border-color: rgb(87 89 105/var(--tw-border-opacity));
+    }
+
+    .trigger{
+        -webkit-text-size-adjust: 100%;
+        tab-size: 4;
+        color-scheme: dark;
+        -webkit-font-smoothing: antialiased;
+        box-sizing: border-box;
+        border: 0 solid #bfc3d9;
+        font-family: inherit;
+        margin: 0;
+        text-transform: none;
+        -webkit-appearance: button;
+        background-color: transparent;
+        background-image: none;
+        z-index: 50;
+        height: 6rem;
+        width: 6rem;
+        cursor: default;
+        border-width: 2px;
+        border-style: dashed;
+        border-color: rgb(31 32 40/var(--tw-border-opacity));
+        padding: .5rem;
+        font-size: .875rem;
+        line-height: 1.25rem;
+        font-weight: 700;
+        color: rgb(31 32 40/var(--tw-text-opacity));
+    }
+
+    .floating {
+        position:absolute;
+        background: #222;
+        color: white;
+        font-weight: bold;
+        padding: 5px;
+        border-radius: 4px;
+        font-size: 90%;
+        /*pointer-events: none;*/
+    }
+
+    .floating-arrow {
+        position: absolute;
+        background: #333;
+        width: 8px;
+        height: 8px;
+        transform: rotate(45deg);
+    }
+</style>
+
+<h3>浮动控制 Floating</h3>
+
+<h4>Floating是一个用于创建浮动元素的低级工具组件。用于创建Tooltips、popovers、dropdowns、menus等。</h4>
+
+<DemoBlock Title="基础用法" Introduction="点击圆圈，显示tooltip" Name="Normal">
+   <div class="container">
+
+    <button @onclick="@(e=>_placement = Placement.Top)" class="btn" style="left: calc((50% - 10px) - 1rem); top: 0px;">
+        <div class="dot"></div>
+     </button>
+
+    <button @onclick="@(e=>_placement = Placement.TopStart)" class="btn" style="left: calc((50% - 70px) - 1rem); top: 0px;">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.TopEnd)" class="btn" style="left: calc((50% + 50px) - 1rem); top: 0px;">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.Bottom)" class="btn" style="left: calc((50% - 10px) - 1rem); bottom: 0px;">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.BottomStart)" class="btn" style="left: calc((50% - 70px) - 1rem); bottom: 0px;">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.BottomEnd)" class="btn" style="left: calc((50% + 50px) - 1rem); bottom: 0px;">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.Right)" class="btn" style="top: calc((50% - 10px) - 1rem); right: min(50px, 5%);">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.RightStart)" class="btn" style="top: calc((50% - 70px) - 1rem); right: min(50px, 5%);">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.RightEnd)" class="btn" style="top: calc((50% + 50px) - 1rem); right: min(50px, 5%);">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.Left)" class="btn" style="top: calc((50% - 10px) - 1rem); left: min(50px, 5%);">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.LeftStart)" class="btn" style="top: calc((50% - 70px) - 1rem); left: min(50px, 5%);">
+        <div class="dot"></div>
+    </button>
+
+    <button @onclick="@(e=>_placement = Placement.LeftEnd)" class="btn" style="top: calc((50% + 50px) - 1rem); left: min(50px, 5%);">
+        <div class="dot"></div>
+    </button>
+
+    <!---->
+    <button @ref="@_ctx.Reference" @onclick="(e=>_ctx.Overlay())" class="trigger">点击开始</button>
+
+    <!---->
+    <Floating class="floating"
+        TRef ="ElementReference" Target="@_ctx" Placement="@_placement"
+        MainAxis="6" ShiftPadding="5"
+        UseArrow="true" ArrowStyleClass="overlay-arrow" ArrowOffset="-4">
+        <b>@_placement.ToDescriptionString()</b>
+    </Floating>
+
+   </div>
+</DemoBlock>
+
+<h4>Floating的控制依赖于一个上下文对象 FloatingContext。</h4>
+<AttributeTable Items="@GetAttributes1()" />
+
+<AttributeTable Items="@GetAttributes2()" />
+
+@code{
+    private FloatingContext<ElementReference> _ctx = new();
+
+    private Placement _placement = Placement.Auto;
+
+    private IEnumerable<AttributeItem> GetAttributes1() => new AttributeItem[]
+    {
+        new AttributeItem()
+        {
+            Name = nameof(FloatingContext<string>.Initialized),
+            Description = "获得 是否初始化组件引用，接收到第一个不为空的对象时设置为 true",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingContext<string>.Reference),
+            Description = "获得/设置 参照控件或元素对象",
+            Type = "TRef",
+            ValueList = " ElementReference | IdComponentBase | dom css-selecter ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingContext<string>.Show),
+            Description = "获得/设置 是否显示浮动层",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "true"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingContext<string>.Toggle),
+            Description = "切换显示状态",
+            Type = "void",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingContext<string>.Overlay),
+            Description = "叠加显示",
+            Type = "void",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingContext<string>.Reset),
+            Description = "还原默认状态",
+            Type = "void",
+            ValueList = " — ",
+            DefaultValue = " — "
+        }
+    };
+
+    private IEnumerable<AttributeItem> GetAttributes2() => new AttributeItem[]
+    {
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.TagName),
+            Description = "获得/设置 浮动层 TagName 属性 默认为 div",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = "div"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.DefaultShow),
+            Description = "获得/设置 控制浮动层 的初始可见性",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.AutoUpdate),
+            Description = "获得/设置 是否自动更新位置 默认 true",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "true"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.Delay),
+            Description = "获得/设置 触发后显示和隐藏浮动层的 毫秒延迟量",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = "0"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.Target),
+            Description = "获得/设置 浮动层的参考元素",
+            Type = "FloatingContext<TRef>",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.ChildContent),
+            Description = "获得/设置 子组件内容",
+            Type = "FloatingContext<TRef>",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.Strategy),
+            Description = "获得/设置 浮动层显示时 使用的定位模式 默认为 绝对定位",
+            Type = "PositionStrategy",
+            ValueList = " Absolute | Fixed ",
+            DefaultValue = " Absolute "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.Placement),
+            Description = "获得/设置 浮动层相对于它的参考元素位置。",
+            Type = "Placement",
+            ValueList = " 参见Placement枚举定义 ",
+            DefaultValue = " Auto "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.MainAxis),
+            Description = "获得/设置 主轴：浮动元素和参考元素之间的距离。",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.ShiftPadding),
+            Description = "获得/设置 配置需要填充的宽度，沿指定轴移动浮动元素以使其保持在视图中。",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.UseArrow),
+            Description = "获得/设置 是否使用 提示箭头 浮动层必须预先设置为 绝对定位",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = " false "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.ArrowOffset),
+            Description = "获得/设置 是否使用 提示箭头 浮动层必须预先设置为 绝对定位",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.ArrowStyleClass),
+            Description = "获得/设置 提示箭头的 样式",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = " — "
+        }
+    };
+}

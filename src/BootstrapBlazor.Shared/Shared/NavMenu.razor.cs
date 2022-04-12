@@ -982,6 +982,11 @@ public sealed partial class NavMenu
             {
                 Text = Localizer["Split"],
                 Url = "splits"
+            },
+            new()
+            {
+                Text = "浮动控制 Floating",
+                Url = "floatings"
             }
         };
         AddBadge(item);
