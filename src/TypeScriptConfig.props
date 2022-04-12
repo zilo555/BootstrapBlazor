@@ -11,8 +11,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="wwwroot\ts\*.js" />
-  </ItemGroup>
-
 </Project>
