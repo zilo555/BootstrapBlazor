@@ -120,6 +120,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootstrapBlazor.AzureSpeech
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootstrapBlazor.TypeScriptTest", "src\Extensions\Components\BootstrapBlazor.TypeScriptTest\BootstrapBlazor.TypeScriptTest.csproj", "{B1F254CE-0B22-46C4-AD04-E6887EAC62D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BootstrapBlazor.BarcodeReader", "src\Extensions\Components\BootstrapBlazor.BarcodeReader\BootstrapBlazor.BarcodeReader.csproj", "{DC4513BB-32A3-42AB-87FF-29255D2B5D66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,6 +196,10 @@ Global
 		{B1F254CE-0B22-46C4-AD04-E6887EAC62D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1F254CE-0B22-46C4-AD04-E6887EAC62D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1F254CE-0B22-46C4-AD04-E6887EAC62D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC4513BB-32A3-42AB-87FF-29255D2B5D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC4513BB-32A3-42AB-87FF-29255D2B5D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC4513BB-32A3-42AB-87FF-29255D2B5D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC4513BB-32A3-42AB-87FF-29255D2B5D66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -226,6 +232,7 @@ Global
 		{C28717F8-9D2B-4296-9CC4-94882338F370} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
 		{42108A8A-C773-4F35-A870-3673BDD383E4} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
 		{B1F254CE-0B22-46C4-AD04-E6887EAC62D9} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
+		{DC4513BB-32A3-42AB-87FF-29255D2B5D66} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0DCB0756-34FA-4FD0-AE1D-D3F08B5B3A6B}
