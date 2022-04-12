@@ -12,7 +12,7 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// 
 /// </summary>
-public partial class Camera : IAsyncDisposable
+public partial class Camera
 {
     private ElementReference CameraElement { get; set; }
 
@@ -317,8 +317,10 @@ public partial class Camera : IAsyncDisposable
     /// </summary>
     /// <param name="disposing"></param>
     /// <returns></returns>
-    protected virtual async ValueTask DisposeAsyncCore(bool disposing)
+    protected override async ValueTask DisposeAsync(bool disposing)
     {
+        await base.DisposeAsync(disposing);
+
         if (disposing)
         {
             if (Interop != null)
@@ -328,14 +330,5 @@ public partial class Camera : IAsyncDisposable
                 Interop = null;
             }
         }
-    }
-
-    /// <summary>
-    /// DisposeAsync 方法
-    /// </summary>
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore(true).ConfigureAwait(false);
-        GC.SuppressFinalize(this);
     }
 }

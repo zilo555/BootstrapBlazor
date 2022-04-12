@@ -10,7 +10,7 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// Layout 组件基类
 /// </summary>
-public abstract class LayoutBase : BootstrapComponentBase, IAsyncDisposable
+public abstract class LayoutBase : BootstrapComponentBase
 {
     /// <summary>
     /// 
@@ -249,8 +249,10 @@ public abstract class LayoutBase : BootstrapComponentBase, IAsyncDisposable
     /// </summary>
     /// <param name="disposing"></param>
     /// <returns></returns>
-    protected virtual ValueTask DisposeAsyncCore(bool disposing)
+    protected override async ValueTask DisposeAsync(bool disposing)
     {
+        await base.DisposeAsync(disposing);
+
         if (disposing)
         {
             if (OnAuthorizing != null)
@@ -258,16 +260,5 @@ public abstract class LayoutBase : BootstrapComponentBase, IAsyncDisposable
                 Navigation.LocationChanged -= Navigation_LocationChanged;
             }
         }
-        return ValueTask.CompletedTask;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore(true);
-        GC.SuppressFinalize(this);
     }
 }

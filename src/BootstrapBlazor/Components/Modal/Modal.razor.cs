@@ -9,7 +9,7 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// 
 /// </summary>
-public partial class Modal : IAsyncDisposable
+public partial class Modal
 {
     /// <summary>
     /// 获得/设置 DOM 元素实例
@@ -186,11 +186,13 @@ public partial class Modal : IAsyncDisposable
     }
 
     /// <summary>
-    /// Dispose
+    /// DisposeAsync 方法
     /// </summary>
     /// <param name="disposing"></param>
-    protected virtual async ValueTask DisposeAsyncCore(bool disposing)
+    protected override async ValueTask DisposeAsync(bool disposing)
     {
+        await base.DisposeAsync(disposing);
+
         if (disposing)
         {
             // 切换线程防止 JS 清理 DOM 后 C# 代码报错
@@ -200,14 +202,5 @@ public partial class Modal : IAsyncDisposable
             // JS 清理 DOM
             await JSRuntime.InvokeVoidAsync(ModalElement, "bb_modal", "dispose");
         }
-    }
-
-    /// <summary>
-    /// Dispose 方法
-    /// </summary>
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore(true);
-        GC.SuppressFinalize(this);
     }
 }

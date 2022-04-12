@@ -15,7 +15,7 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// 
 /// </summary>
-public partial class Layout : IAsyncDisposable
+public partial class Layout
 {
     private JSInterop<Layout>? Interop { get; set; }
 
@@ -224,11 +224,12 @@ public partial class Layout : IAsyncDisposable
     /// </summary>
     /// <param name="disposing"></param>
     /// <returns></returns>
-    protected override async ValueTask DisposeAsyncCore(bool disposing)
+    protected override async ValueTask DisposeAsync(bool disposing)
     {
+        await base.DisposeAsync(disposing);
+
         if (disposing)
         {
-            await base.DisposeAsyncCore(disposing);
 
             if (Interop != null)
             {

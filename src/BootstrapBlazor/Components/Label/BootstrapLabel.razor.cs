@@ -9,7 +9,7 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// BootstrapLabel 组件
 /// </summary>
-public partial class BootstrapLabel : IAsyncDisposable
+public partial class BootstrapLabel
 {
     /// <summary>
     /// 获得/设置 组件值 显示文本 默认 null
@@ -75,8 +75,10 @@ public partial class BootstrapLabel : IAsyncDisposable
     /// DisposeAsync 方法
     /// </summary>
     /// <param name="disposing"></param>
-    protected virtual async ValueTask DisposeAsync(bool disposing)
+    protected override async ValueTask DisposeAsync(bool disposing)
     {
+        await base.DisposeAsync(disposing);
+
         if (disposing)
         {
             if (Init)
@@ -84,15 +86,5 @@ public partial class BootstrapLabel : IAsyncDisposable
                 await InvokeTooltip("dispose");
             }
         }
-    }
-
-    /// <summary>
-    /// DisposeAsync 方法
-    /// </summary>
-    /// <returns></returns>
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsync(true);
-        GC.SuppressFinalize(this);
     }
 }

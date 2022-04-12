@@ -471,8 +471,10 @@ public abstract class ValidateBase<TValue> : DisplayBase<TValue>, IValidateCompo
     /// </summary>
     /// <param name="disposing"></param>
     /// <returns></returns>
-    protected override async ValueTask DisposeAsyncCore(bool disposing)
+    protected override async ValueTask DisposeAsync(bool disposing)
     {
+        await base.DisposeAsync(disposing);
+
         if (disposing)
         {
             if (ValidateForm != null && FieldIdentifier.HasValue)
@@ -481,7 +483,6 @@ public abstract class ValidateBase<TValue> : DisplayBase<TValue>, IValidateCompo
             }
         }
 
-        await base.DisposeAsyncCore(disposing);
     }
     #endregion
 

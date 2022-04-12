@@ -10,7 +10,7 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// Bootstrap Blazor 组件基类
 /// </summary>
-public abstract class BootstrapComponentBase : ComponentBase, IHandleEvent
+public abstract class BootstrapComponentBase : ComponentBase, IHandleEvent, IAsyncDisposable
 {
     /// <summary>
     /// 获得/设置 用户自定义属性
@@ -30,6 +30,11 @@ public abstract class BootstrapComponentBase : ComponentBase, IHandleEvent
     [Inject]
     [NotNull]
     protected IJSRuntime? JSRuntime { get; set; }
+
+    /// <summary>
+    /// 获得/设置 JSModule 实例
+    /// </summary>
+    protected JSModule? Module { get; set; }
 
     /// <summary>
     /// 获得/设置 是否需要 Render 组件 默认 false 需要重新渲染组件
@@ -93,5 +98,31 @@ public abstract class BootstrapComponentBase : ComponentBase, IHandleEvent
         return shouldAwaitTask ?
             CallStateHasChangedOnAsyncCompletion(task) :
             Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// DisposeAsync 方法
+    /// </summary>
+    /// <param name="disposing"></param>
+    /// <returns></returns>
+    protected virtual async ValueTask DisposeAsync(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Module != null)
+            {
+                await Module.DisposeAsync();
+            }
+        }
+    }
+
+    /// <summary>
+    /// DisposeAsync 方法
+    /// </summary>
+    /// <returns></returns>
+    public async ValueTask DisposeAsync()
+    {
+        await DisposeAsync(true);
+        GC.SuppressFinalize(this);
     }
 }

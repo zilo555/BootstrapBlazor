@@ -7,7 +7,7 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// 提供 Tooltip 功能的组件
 /// </summary>
-public abstract class TooltipComponentBase : IdComponentBase, ITooltipHost, IAsyncDisposable
+public abstract class TooltipComponentBase : IdComponentBase, ITooltipHost
 {
     /// <summary>
     /// 获得/设置 ITooltip 实例
@@ -109,12 +109,13 @@ public abstract class TooltipComponentBase : IdComponentBase, ITooltipHost, IAsy
     protected virtual string RetrieveTrigger() => Tooltip?.Trigger ?? "hover focus";
 
     /// <summary>
-    /// DisposeAsyncCore 方法
+    /// DisposeAsync 方法
     /// </summary>
     /// <param name="disposing"></param>
     /// <returns></returns>
-    protected virtual async ValueTask DisposeAsyncCore(bool disposing)
+    protected override async ValueTask DisposeAsync(bool disposing)
     {
+        await base.DisposeAsync(disposing);
         if (disposing && Tooltip != null && IsInited)
         {
             var id = RetrieveId();
@@ -130,14 +131,5 @@ public abstract class TooltipComponentBase : IdComponentBase, ITooltipHost, IAsy
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// DisposeAsync 方法
-    /// </summary>
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore(true);
-        GC.SuppressFinalize(this);
     }
 }
