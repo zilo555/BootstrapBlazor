@@ -12,7 +12,8 @@
         line-height: inherit;
         color: rgb(220 223 236/var(--tw-text-opacity));
         box-sizing: border-box;
-        border: 0 solid #bfc3d9;
+        border: 1px dotted #bfc3d9;
+        border-radius: 4px;
         display: grid;
         height: 20rem;
         width: 20rem;
@@ -39,7 +40,7 @@
         cursor: pointer;
         position: absolute;
         padding: 1rem;
-        transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;
+        transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;
         transition-timing-function: cubic-bezier(.4,0,.2,1);
         transition-duration: .15s;
     }
@@ -93,7 +94,7 @@
 
     .floating {
         position:absolute;
-        background: #222;
+        background: #333;
         color: white;
         font-weight: bold;
         padding: 5px;
@@ -115,87 +116,146 @@
 
 <h4>Floating是一个用于创建浮动元素的低级工具组件。用于创建Tooltips、popovers、dropdowns、menus等。</h4>
 
-<DemoBlock Title="基础用法" Introduction="点击圆圈，显示tooltip" Name="Normal">
-   <div class="container">
+<h4>Floating的控制依赖于一个上下文对象 FloatingContext。</h4>
 
-    <button @onclick="@(e=>_placement = Placement.Top)" class="btn" style="left: calc((50% - 10px) - 1rem); top: 0px;">
-        <div class="dot"></div>
-     </button>
+<h4>上下文参照对象支持 ElementReference | IdComponentBase | Css Selecter。</h4>
 
-    <button @onclick="@(e=>_placement = Placement.TopStart)" class="btn" style="left: calc((50% - 70px) - 1rem); top: 0px;">
-        <div class="dot"></div>
-    </button>
+<DemoBlock Title="基础用法" Introduction="先点击开始，显示tooltip，然后点击圆圈可以切换位置" Name="Normal">
+    <div class="container">
 
-    <button @onclick="@(e=>_placement = Placement.TopEnd)" class="btn" style="left: calc((50% + 50px) - 1rem); top: 0px;">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.Top)" class="btn" style="left: calc((50% - 10px) - 1rem); top: 0px;">
+            <div class="dot"></div>
+            </button>
 
-    <button @onclick="@(e=>_placement = Placement.Bottom)" class="btn" style="left: calc((50% - 10px) - 1rem); bottom: 0px;">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.TopStart)" class="btn" style="left: calc((50% - 70px) - 1rem); top: 0px;">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.BottomStart)" class="btn" style="left: calc((50% - 70px) - 1rem); bottom: 0px;">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.TopEnd)" class="btn" style="left: calc((50% + 50px) - 1rem); top: 0px;">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.BottomEnd)" class="btn" style="left: calc((50% + 50px) - 1rem); bottom: 0px;">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.Bottom)" class="btn" style="left: calc((50% - 10px) - 1rem); bottom: 0px;">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.Right)" class="btn" style="top: calc((50% - 10px) - 1rem); right: min(50px, 5%);">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.BottomStart)" class="btn" style="left: calc((50% - 70px) - 1rem); bottom: 0px;">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.RightStart)" class="btn" style="top: calc((50% - 70px) - 1rem); right: min(50px, 5%);">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.BottomEnd)" class="btn" style="left: calc((50% + 50px) - 1rem); bottom: 0px;">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.RightEnd)" class="btn" style="top: calc((50% + 50px) - 1rem); right: min(50px, 5%);">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.Right)" class="btn" style="top: calc((50% - 10px) - 1rem); right: min(50px, 5%);">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.Left)" class="btn" style="top: calc((50% - 10px) - 1rem); left: min(50px, 5%);">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.RightStart)" class="btn" style="top: calc((50% - 70px) - 1rem); right: min(50px, 5%);">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.LeftStart)" class="btn" style="top: calc((50% - 70px) - 1rem); left: min(50px, 5%);">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.RightEnd)" class="btn" style="top: calc((50% + 50px) - 1rem); right: min(50px, 5%);">
+            <div class="dot"></div>
+        </button>
 
-    <button @onclick="@(e=>_placement = Placement.LeftEnd)" class="btn" style="top: calc((50% + 50px) - 1rem); left: min(50px, 5%);">
-        <div class="dot"></div>
-    </button>
+        <button @onclick="@(e=>_placement = Placement.Left)" class="btn" style="top: calc((50% - 10px) - 1rem); left: min(50px, 5%);">
+            <div class="dot"></div>
+        </button>
 
-    <!---->
-    <button @ref="@_ctx.Reference" @onclick="(e=>_ctx.Overlay())" class="trigger">点击开始</button>
+        <button @onclick="@(e=>_placement = Placement.LeftStart)" class="btn" style="top: calc((50% - 70px) - 1rem); left: min(50px, 5%);">
+            <div class="dot"></div>
+        </button>
 
-    <!---->
-    <Floating class="floating"
-        TRef ="ElementReference" Target="@_ctx" Placement="@_placement"
-        MainAxis="6" ShiftPadding="5"
-        UseArrow="true" ArrowStyleClass="overlay-arrow" ArrowOffset="-4">
-        <b>@_placement.ToDescriptionString()</b>
-    </Floating>
+        <button @onclick="@(e=>_placement = Placement.LeftEnd)" class="btn" style="top: calc((50% + 50px) - 1rem); left: min(50px, 5%);">
+            <div class="dot"></div>
+        </button>
 
-   </div>
+        <!-- 浮动层trigger -->
+        <button @ref="@_ctx.Reference" @onclick="(e=>_ctx.Overlay(e))" class="trigger">点击开始</button>
+
+        <!-- 浮动层 -->
+        <Floating class="floating"
+            TRef ="ElementReference" Target="@_ctx" Placement="@_placement"
+            MainAxis="6" ShiftPadding="5"
+            UseArrow="true" ArrowStyleClass="floating-arrow" ArrowOffset="-4">
+            <b>@_placement</b>
+        </Floating>
+
+    </div>
 </DemoBlock>
 
-<h4>Floating的控制依赖于一个上下文对象 FloatingContext。</h4>
+<DemoBlock Title="FloatingTrigger" Introduction="如果不想使用 FloatingContext，则可以使用FloatingTrigger，不暴露控制上下文。"  Name="FloatingTrigger">
+    <FloatingTrigger TagName="button"
+            FloatingStyleClass="floating" 
+            MainAxis="6" ShiftPadding="5"
+            UseArrow="true" ArrowStyleClass="floating-arrow" ArrowOffset="-4">
+        <TriggerTemplate>
+            请指向我 Hover | Click
+        </TriggerTemplate>
+        <FloatingTemplate>
+            FloatingTrigger组件不暴露FloatingContext
+        </FloatingTemplate>
+    </FloatingTrigger>
+
+    <FloatingTrigger TagName="button"
+            EventTrigger="TriggerEvent.Click"
+            FloatingStyleClass="floating" 
+            MainAxis="6" ShiftPadding="5"
+            UseArrow="true" ArrowStyleClass="floating-arrow" ArrowOffset="-4">
+        <TriggerTemplate>
+            请点击我 Click
+        </TriggerTemplate>
+        <FloatingTemplate>
+            FloatingTrigger组件不暴露FloatingContext
+        </FloatingTemplate>
+    </FloatingTrigger>
+</DemoBlock>
+
+<DemoBlock Title="ContextMenu" Introduction="使用虚拟元素快速创建一个ContextMenu"  Name="ContextMenu">
+    <button @onclick="@(e =>_useFollowTrigger = true)">切换跟随触发</button>
+    <FloatingTrigger class="container"
+            UseVirtualElement="true"
+            UseFollowTrigger="@_useFollowTrigger"
+            EventTrigger="TriggerEvent.Click"
+            FloatingStyleClass="floating" 
+            MainAxis="6" ShiftPadding="5"
+            UseArrow="true" ArrowStyleClass="floating-arrow" ArrowOffset="-4">
+        <TriggerTemplate>
+            请点击我所在区域任意位置
+        </TriggerTemplate>
+        <FloatingTemplate>
+            <b>由3部分组成：</b>
+            <ul>
+                <li>1、FloatingContext 浮动控制上下文</li>
+                <li>2、Floating 浮动显示组件</li>
+                <li>3、FloatingTrigger 触发控制组件</li>
+            </ul>
+        </FloatingTemplate>
+    </FloatingTrigger>
+</DemoBlock>
+
 <AttributeTable Items="@GetAttributes1()" />
 
+<h4>Floating组件用于配置浮动的参数。</h4>
 <AttributeTable Items="@GetAttributes2()" />
+
+<h4>如果不想使用 FloatingContext，则可以使用FloatingTrigger组件。</h4>
+<AttributeTable Items="@GetAttributes3()" />
 
 @code{
     private FloatingContext<ElementReference> _ctx = new();
 
-    private Placement _placement = Placement.Auto;
+    private Placement _placement = Placement.Right;
+
+    private bool _useFollowTrigger = false;
 
     private IEnumerable<AttributeItem> GetAttributes1() => new AttributeItem[]
     {
         new AttributeItem()
         {
-            Name = nameof(FloatingContext<string>.Initialized),
-            Description = "获得 是否初始化组件引用，接收到第一个不为空的对象时设置为 true",
+            Name = nameof(FloatingContext<string>.ForceTrigger),
+            Description = "获得/设置 是否无关显示状态，强制触发事件，通常用于ContextMenu等组件封装。",
             Type = "bool",
             ValueList = " — ",
             DefaultValue = "false"
@@ -205,7 +265,7 @@
             Name = nameof(FloatingContext<string>.Reference),
             Description = "获得/设置 参照控件或元素对象",
             Type = "TRef",
-            ValueList = " ElementReference | IdComponentBase | dom css-selecter ",
+            ValueList = " ElementReference | IdComponentBase | Css Selecter ",
             DefaultValue = " — "
         },
         new AttributeItem()
@@ -254,11 +314,19 @@
         },
         new AttributeItem()
         {
-            Name = nameof(Floating<string>.DefaultShow),
-            Description = "获得/设置 控制浮动层 的初始可见性",
+            Name = nameof(Floating<string>.UseVirtualElement),
+            Description = "获得/设置 是否使用虚拟元素",
             Type = "bool",
             ValueList = " — ",
             DefaultValue = "false"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(Floating<string>.InitialState),
+            Description = "获得/设置 控制浮动层 的初始可见性",
+            Type = "FloatingState",
+            ValueList = " Hidden | Show | Overlay ",
+            DefaultValue = " Hidden "
         },
         new AttributeItem()
         {
@@ -306,7 +374,7 @@
             Description = "获得/设置 浮动层相对于它的参考元素位置。",
             Type = "Placement",
             ValueList = " 参见Placement枚举定义 ",
-            DefaultValue = " Auto "
+            DefaultValue = " Right "
         },
         new AttributeItem()
         {
@@ -343,6 +411,177 @@
         new AttributeItem()
         {
             Name = nameof(Floating<string>.ArrowStyleClass),
+            Description = "获得/设置 提示箭头的 样式",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = " — "
+        }
+    };
+
+    private IEnumerable<AttributeItem> GetAttributes3() => new AttributeItem[]
+    {
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.TriggerTemplate),
+            Description = "获得/设置 触发组件内容",
+            Type = "RenderFragment",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.FloatingTemplate),
+            Description = "获得/设置 浮动层",
+            Type = "RenderFragment",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.EventTrigger),
+            Description = "获得/设置 触发浮动层 可见性的事件 默认为悬停 和 焦点 事件",
+            Type = "TriggerEvent",
+            ValueList = " Hover | Focus ",
+            DefaultValue = "Click | Hover | Focus"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.TagName),
+            Description = "获得/设置 触发组件 TagName 属性 默认为 div",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = "div"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.UseVirtualElement),
+            Description = "获得/设置 是否使用虚拟元素",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.UseFollowTrigger),
+            Description = "获得/设置 是否跟随触发 默认不触发，通常用于组件封装",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.ForceTrigger),
+            Description = "获得/设置 是否无关显示状态，强制触发事件 默认不强制，通常用于组件封装",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "false"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.OnReset),
+            Description = "获得/设置 浮动层隐藏时 触发回调",
+            Type = "Func<Task>",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.OnOverlay),
+            Description = "获得/设置 浮动层显示时 触发回调",
+            Type = "Func<Task>",
+            ValueList = " — ",
+            DefaultValue = "div"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.FloatingTagName),
+            Description = "获得/设置 浮动层 TagName 属性 默认为 div",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = "div"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.FloatingStyleClass),
+            Description = "获得/设置 浮动层的 样式",
+            Type = "string",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.InitialState),
+            Description = "获得/设置 控制浮动层 的初始可见性",
+            Type = "FloatingState",
+            ValueList = " Hidden | Show | Overlay ",
+            DefaultValue = " Hidden "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.AutoUpdate),
+            Description = "获得/设置 是否自动更新位置 默认 true",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = "true"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.Delay),
+            Description = "获得/设置 触发后显示和隐藏浮动层的 毫秒延迟量",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = "0"
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.Strategy),
+            Description = "获得/设置 浮动层显示时 使用的定位模式 默认为 绝对定位",
+            Type = "PositionStrategy",
+            ValueList = " Absolute | Fixed ",
+            DefaultValue = " Absolute "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.Placement),
+            Description = "获得/设置 浮动层相对于它的参考元素位置。",
+            Type = "Placement",
+            ValueList = " 参见Placement枚举定义 ",
+            DefaultValue = " Right "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.MainAxis),
+            Description = "获得/设置 主轴：浮动元素和参考元素之间的距离。",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.ShiftPadding),
+            Description = "获得/设置 配置需要填充的宽度，沿指定轴移动浮动元素以使其保持在视图中。",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.UseArrow),
+            Description = "获得/设置 是否使用 提示箭头 浮动层必须预先设置为 绝对定位",
+            Type = "bool",
+            ValueList = " — ",
+            DefaultValue = " false "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.ArrowOffset),
+            Description = "获得/设置 是否使用 提示箭头 浮动层必须预先设置为 绝对定位",
+            Type = "int",
+            ValueList = " — ",
+            DefaultValue = " — "
+        },
+        new AttributeItem()
+        {
+            Name = nameof(FloatingTrigger.ArrowStyleClass),
             Description = "获得/设置 提示箭头的 样式",
             Type = "string",
             ValueList = " — ",
