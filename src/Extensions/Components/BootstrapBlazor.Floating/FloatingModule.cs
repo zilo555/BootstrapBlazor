@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Reflection;
 
 namespace BootstrapBlazor.Components;
 
@@ -8,7 +8,7 @@ namespace BootstrapBlazor.Components;
 /// 
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
-public sealed class FloatingModule<TValue> : IAsyncDisposable where TValue : class
+internal sealed class FloatingModule<TValue> : IAsyncDisposable where TValue : class
 {
     /// <summary>
     /// 版本号
@@ -50,11 +50,11 @@ public sealed class FloatingModule<TValue> : IAsyncDisposable where TValue : cla
     /// 创建浮动层对象
     /// </summary>
     /// <param name="interop"></param>
+    /// <param name="reference"></param>
     /// <param name="floating"></param>
-    /// <param name="target"></param>
     /// <param name="config"></param>
     /// <returns></returns>
-    public async ValueTask CreateFloating(DotNetObjectReference<TValue>? interop, ElementReference floating, ElementReference? target, object config)
+    public async ValueTask ComputeFloating<TRef>(DotNetObjectReference<TValue>? interop, TRef? reference, ElementReference? floating, FloatingConfig config)
     {
         if (interop == null)
         {
@@ -63,7 +63,15 @@ public sealed class FloatingModule<TValue> : IAsyncDisposable where TValue : cla
 
         if (await CreateModule())
         {
-            await _module!.InvokeVoidAsync("createFloating", interop, floating, target, config);
+            switch (config.ReferenceType)
+            {
+                case FloatingRefType.IdComponentBase:
+                    await _module!.InvokeVoidAsync("computeFloating", interop, null, floating, config);
+                    break;
+                default:
+                    await _module!.InvokeVoidAsync("computeFloating", interop, reference, floating, config);
+                    break;
+            }
         }
     }
 
