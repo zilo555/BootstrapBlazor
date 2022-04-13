@@ -19,17 +19,23 @@ public sealed class FloatingTrigger : IdComponentBase
     /// 获得/设置 浮动层
     /// </summary>
     [Parameter]
-    public RenderFragment? OverlayTemplate { get; set; }
+    public RenderFragment? FloatingTemplate { get; set; }
 
     /// <summary>
     /// 获得/设置 触发浮动层 可见性的事件 默认为悬停 和 焦点 事件
     /// </summary>
     [Parameter]
-    public TriggerEvent Event { get; set; } = TriggerEvent.Hover | TriggerEvent.Focus;
+    public TriggerEvent EventTrigger { get; set; } = TriggerEvent.Hover | TriggerEvent.Focus;
+
+    /// <summary>
+    /// 获得/设置 是否无关显示状态，强制触发事件 默认不强制，通常用于组件封装
+    /// </summary>
+    [Parameter]
+    public bool ForceTrigger { get; init; }
 
     /// <summary>
     /// 获得/设置 触发组件 TagName 属性 默认为 div
-    /// 如果不想外包装一层容器，建议使用 Overlay 自行包装
+    /// 如果不想外包装一层容器，建议使用 Floating 自行包装
     /// </summary>
     [Parameter]
     [NotNull]
@@ -52,19 +58,31 @@ public sealed class FloatingTrigger : IdComponentBase
     /// </summary>
     [Parameter]
     [NotNull]
-    public string OverlayTagName { get; set; } = "div";
+    public string FloatingTagName { get; set; } = "div";
 
     /// <summary>
     /// 获得/设置 浮动层的 样式
     /// </summary>
     [Parameter]
-    public string? OverlayStyleClass { get; set; }
+    public string? FloatingStyleClass { get; set; }
+
+    /// <summary>
+    /// 获得/设置 是否跟随触发
+    /// </summary>
+    [Parameter]
+    public bool UseFollowTrigger { get; set; }
+
+    /// <summary>
+    /// 获得/设置 是否使用虚拟元素
+    /// </summary>
+    [Parameter]
+    public bool UseVirtualElement { get; init; }
 
     /// <summary>
     /// 获得/设置 控制浮动层 的初始可见性
     /// </summary>
     [Parameter]
-    public bool DefaultShow { get; init; }
+    public FloatingState InitialState { get; init; }
 
     /// <summary>
     /// 获得/设置 是否自动更新位置 默认 true
@@ -79,13 +97,6 @@ public sealed class FloatingTrigger : IdComponentBase
     public int Delay { get; set; }
 
     /// <summary>
-    /// 获得/设置 子组件内容 使用时 context为 提示箭头，必须放在末尾
-    /// </summary>
-    [Parameter]
-    [NotNull]
-    public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>
     /// 获得/设置 浮动层显示时 使用的定位模式 默认为 绝对定位
     /// </summary>
     [Parameter]
@@ -95,7 +106,7 @@ public sealed class FloatingTrigger : IdComponentBase
     /// 获得/设置 浮动层相对于它的参考元素位置。
     /// </summary>
     [Parameter]
-    public Placement Placement { get; set; }
+    public Placement Placement { get; set; } = Placement.Right;
 
     /// <summary>
     /// 获得/设置 主轴：浮动元素和参考元素之间的距离。
@@ -127,7 +138,16 @@ public sealed class FloatingTrigger : IdComponentBase
     [Parameter]
     public string? ArrowStyleClass { get; set; }
 
-    private FloatingContext<ElementReference> _overlayContext = new();
+    private FloatingContext<ElementReference>? _floatingContext;
+
+    /// <summary>
+    /// OnInitialized
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _floatingContext = new(ForceTrigger || UseVirtualElement);
+    }
 
     /// <summary>
     /// BuildRenderTree
@@ -141,18 +161,18 @@ public sealed class FloatingTrigger : IdComponentBase
             builder.AddMultipleAttributes(1, AdditionalAttributes);
         }
 
-        if (Event.HasFlag(TriggerEvent.Hover))
+        if (EventTrigger.HasFlag(TriggerEvent.Hover))
         {
             builder.AddAttribute(2, "onmouseenter", EventCallback.Factory.Create<MouseEventArgs>(this, Overlay));
             builder.AddAttribute(3, "onmouseleave", EventCallback.Factory.Create<MouseEventArgs>(this, Reset));
         }
 
-        if (Event.HasFlag(TriggerEvent.Click))
+        if (EventTrigger.HasFlag(TriggerEvent.Click))
         {
             builder.AddAttribute(4, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, Toggle));
         }
 
-        if (Event.HasFlag(TriggerEvent.Focus))
+        if (EventTrigger.HasFlag(TriggerEvent.Focus))
         {
             builder.AddAttribute(5, "onfocus", EventCallback.Factory.Create<FocusEventArgs>(this, Overlay));
             builder.AddAttribute(6, "onblur", EventCallback.Factory.Create<FocusEventArgs>(this, Reset));
@@ -160,17 +180,17 @@ public sealed class FloatingTrigger : IdComponentBase
 
         builder.AddContent(7, TriggerTemplate);
 
-        builder.AddElementReferenceCapture(9, reference => { _overlayContext.Reference = reference; });
+        builder.AddElementReferenceCapture(9, reference => { _floatingContext!.Reference = reference; });
         builder.CloseElement();
 
         //浮动层 必须是单独的一块元素，不然floating-ui无法计算
         builder.OpenComponent<Floating<ElementReference>>(10);
-        builder.AddAttribute(11, nameof(Floating<ElementReference>.Target), _overlayContext);
-        builder.AddAttribute(12, nameof(Floating<ElementReference>.TagName), OverlayTagName);
-        builder.AddAttribute(13, nameof(Floating<ElementReference>.DefaultShow), DefaultShow);
+        builder.AddAttribute(11, nameof(Floating<ElementReference>.Target), _floatingContext);
+        builder.AddAttribute(12, nameof(Floating<ElementReference>.TagName), FloatingTagName);
+        builder.AddAttribute(13, nameof(Floating<ElementReference>.InitialState), InitialState);
         builder.AddAttribute(17, nameof(Floating<ElementReference>.AutoUpdate), AutoUpdate);
         builder.AddAttribute(14, nameof(Floating<ElementReference>.Delay), Delay);
-        builder.AddAttribute(15, nameof(Floating<ElementReference>.ChildContent), OverlayTemplate);
+        builder.AddAttribute(15, nameof(Floating<ElementReference>.ChildContent), FloatingTemplate);
         builder.AddAttribute(16, nameof(Floating<ElementReference>.Strategy), Strategy);
         builder.AddAttribute(17, nameof(Floating<ElementReference>.Placement), Placement);
         builder.AddAttribute(18, nameof(Floating<ElementReference>.MainAxis), MainAxis);
@@ -178,47 +198,43 @@ public sealed class FloatingTrigger : IdComponentBase
         builder.AddAttribute(20, nameof(Floating<ElementReference>.UseArrow), UseArrow);
         builder.AddAttribute(21, nameof(Floating<ElementReference>.ArrowOffset), ArrowOffset);
         builder.AddAttribute(22, nameof(Floating<ElementReference>.ArrowStyleClass), ArrowStyleClass);
-        builder.AddAttribute(23, "class", OverlayStyleClass);
+        builder.AddAttribute(13, nameof(Floating<ElementReference>.UseVirtualElement), UseVirtualElement);
+        builder.AddAttribute(24, "class", FloatingStyleClass);
 
         builder.CloseComponent();
     }
 
-    private async void Overlay()
+    private async void Overlay<TEventArgs>(TEventArgs args) where TEventArgs : EventArgs
     {
-        if (_overlayContext.Initialized)
+        _floatingContext!.Overlay(args);
+        if (OnOverlay != null)
         {
-            _overlayContext.Show = true;
-            if (OnOverlay != null)
-            {
-                await OnOverlay.Invoke();
-            }
+            await OnOverlay.Invoke();
         }
     }
 
-    private async void Reset()
+    private async void Reset<TEventArgs>(TEventArgs args) where TEventArgs : EventArgs
     {
-        if (_overlayContext.Initialized)
+        _floatingContext!.Reset(args);
+        if (OnReset != null)
         {
-            _overlayContext.Show = false;
-            if (OnReset != null)
-            {
-                await OnReset.Invoke();
-            }
+            await OnReset.Invoke();
         }
     }
 
-    private void Toggle()
+    private void Toggle<TEventArgs>(TEventArgs args) where TEventArgs : EventArgs
     {
-        if (_overlayContext.Initialized)
+        if (_floatingContext!.Show)
         {
-            if (_overlayContext.Show)
+            Reset(args);
+            if (UseFollowTrigger)
             {
-                Reset();
+                Overlay(args);
             }
-            else
-            {
-                Overlay();
-            }
+        }
+        else
+        {
+            Overlay(args);
         }
     }
 }
