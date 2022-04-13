@@ -1,1 +1,1 @@
-﻿export { createFloating, cleanupFloating } from "./floating.ts"
+﻿export { computeFloating, cleanupFloating } from "./floating.ts"

@@ -7,6 +7,7 @@ declare type FloatingRefType = 'cssSelecter' | 'elementReference' | 'idComponent
 
 interface FloatingConfig {
     show: boolean;
+    useVirtualElement: boolean;
     referenceType: FloatingRefType;
     initialState: string;
     strategy: Strategy;
@@ -17,6 +18,8 @@ interface FloatingConfig {
     arrowOffset: number;
     autoUpdate: boolean;
     refElementId: string | null;
+    clientX: number;
+    clientY: number;
 }
 
 //创建浮动层
@@ -25,25 +28,29 @@ export function computeFloating(interop: any, reference: any, floating: HTMLElem
 
     let _arrow: HTMLElement | null = null;
     let _reference: ReferenceElement | null = null;
-    switch (config.referenceType) {
-        case 'cssSelecter': _reference = document.querySelector(reference); break;
-        case 'elementReference': _reference = reference; break;
-        case 'idComponentBase': _reference = document.getElementById(config.refElementId!)!; break;
-        case 'mouseEventArgs': _reference = {
+    if (config.useVirtualElement) {
+        _reference = {
             getBoundingClientRect() {
                 return {
                     width: 0,
                     height: 0,
-                    x: reference.ClientX,
-                    y: reference.ClientY,
-                    top: reference.ClientY,
-                    left: reference.ClientX,
-                    right: reference.ClientX,
-                    bottom: reference.ClientY,
+                    x: config.clientX,
+                    y: config.clientY,
+                    top: config.clientY,
+                    left: config.clientX,
+                    right: config.clientX,
+                    bottom: config.clientY,
                 };
             },
-        }; break;
-    };
+        }
+    }
+    else {
+        switch (config.referenceType) {
+            case 'cssSelecter': _reference = document.querySelector(reference); break;
+            case 'elementReference': _reference = reference; break;
+            case 'idComponentBase': _reference = document.getElementById(config.refElementId!)!; break;
+        };
+    }
 
     if (!interop || !_reference) {
         return;
@@ -51,7 +58,7 @@ export function computeFloating(interop: any, reference: any, floating: HTMLElem
 
     //清除历史浮动配置
     const id = floating.dataset.id;
-    if (config?.autoUpdate == true) {
+    if (config.autoUpdate) {
         if (id && cleanups.has(id)) {
             cleanups.get(id)?.call(globalThis);
             cleanups.delete(id);
@@ -101,50 +108,49 @@ export function computeFloating(interop: any, reference: any, floating: HTMLElem
                 console.info(x + '|' + y + '|' + floating.style.left + '|' + floating.style.top);
 
                 //去除重复渲染
-                if (floating.style.left != x.toString() || floating.style.top != y.toString()) {
-                    if (_arrow == null) {
-                        Object.assign(floating.style, {
-                            position: strategy,
-                            left: `${x}px`,
-                            top: `${y}px`,
-                            opacity: 1,
-                            transform: `scale(1)`,
-                            transition: 'transform 0.2s ease, opacity 0.1s ease',
-                            'z-index': null,
-                        });
-                        interop.invokeMethodAsync('ApplyStyles', x, y, null, null, null);
-                    } else {
-                        const x1: Number | undefined = middlewareData.arrow?.x;
-                        const y1: Number | undefined = middlewareData.arrow?.y;
-                        const top = y1 == undefined ? '' : `${y1}px`;
-                        const left = x1 == undefined ? '' : `${x1}px`;
-                        const side: string = {
-                            top: 'bottom',
-                            right: 'left',
-                            bottom: 'top',
-                            left: 'right'
-                        }[placement.split('-')[0]] ?? 'bottom';
+                if (_arrow == null) {
+                    Object.assign(floating.style, {
+                        position: strategy,
+                        left: `${x}px`,
+                        top: `${y}px`,
+                        opacity: 1,
+                        transform: `scale(1)`,
+                        transition: 'transform 0.2s ease, opacity 0.1s ease',
+                        'z-index': null,
+                    });
+                    interop.invokeMethodAsync('ApplyStyles', x, y, null, null, null);
+                } else {
+                    const x1: Number | undefined = middlewareData.arrow?.x;
+                    const y1: Number | undefined = middlewareData.arrow?.y;
+                    const top = y1 == undefined ? '' : `${y1}px`;
+                    const left = x1 == undefined ? '' : `${x1}px`;
+                    const side: string = {
+                        top: 'bottom',
+                        right: 'left',
+                        bottom: 'top',
+                        left: 'right'
+                    }[placement.split('-')[0]] ?? 'bottom';
 
-                        Object.assign(floating.style, {
-                            position: strategy,
-                            left: `${x}px`,
-                            top: `${y}px`,
-                            opacity: 1,
-                            transform: `scale(1)`,
-                            transition: 'transform 0.2s ease, opacity 0.1s ease',
-                            'z-index': null,
-                        });
+                    Object.assign(floating.style, {
+                        position: strategy,
+                        left: `${x}px`,
+                        top: `${y}px`,
+                        opacity: 1,
+                        transform: `scale(1)`,
+                        transition: 'transform 0.2s ease, opacity 0.1s ease',
+                        'z-index': null,
+                    });
 
-                        Object.assign(_arrow.style, {
-                            position: strategy,
-                            left: left,
-                            top: top,
-                            [side]: `${config.arrowOffset}px`
-                        });
+                    Object.assign(_arrow.style, {
+                        position: strategy,
+                        left: left,
+                        top: top,
+                        [side]: `${config.arrowOffset}px`
+                    });
 
-                        interop.invokeMethodAsync('ApplyStyles', x, y, x1, y1, side);
-                    }
+                    interop.invokeMethodAsync('ApplyStyles', x, y, x1, y1, side);
                 }
+
             });
     }
 
@@ -152,7 +158,7 @@ export function computeFloating(interop: any, reference: any, floating: HTMLElem
     update();
 
     //注册自动更新
-    if (config?.autoUpdate == true) {
+    if (config.autoUpdate) {
         id && cleanups.set(id, autoUpdate(_reference, floating, update));
     }
 }
