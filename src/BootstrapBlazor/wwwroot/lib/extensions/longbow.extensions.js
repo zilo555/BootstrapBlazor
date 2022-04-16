@@ -159,4 +159,76 @@
             $this.on('touchstart', handleDragStart);
         }
     });
+
+    var load = function (targetName, callback, interval) {
+        if (!interval) {
+            interval = 100;
+        }
+        if (!window[targetName]) {
+            var handler = window.setInterval(function () {
+                if (!!window[targetName]) {
+                    window.clearInterval(handler);
+
+                    callback();
+                }
+            }, interval);
+        }
+        else {
+            callback();
+        }
+    };
+
+    var addScript = function (content) {
+        // content 文件名
+        const links = [...document.getElementsByTagName('script')];
+        var link = links.filter(function (link) {
+            return link.src.indexOf(content) > -1;
+        });
+        if (link.length === 0) {
+            link = document.createElement('script');
+            link.setAttribute('src', content);
+            document.body.appendChild(link);
+        }
+    };
+
+    var removeScript = function (content) {
+        const links = [...document.getElementsByTagName('script')];
+        var nodes = links.filter(function (link) {
+            return link.src.indexOf(content) > -1;
+        });
+        for (var index = 0; index < nodes.length; index++) {
+            document.body.removeChild(nodes[index]);
+        }
+    }
+
+    var addLink = function (href) {
+        const links = document.getElementsByTagName('link');
+        var link = links.filter(function (link) {
+            return link.href.indexOf(href) > -1;
+        });
+        if (link.length === 0) {
+            link = document.createElement('link');
+            link.setAttribute('href', href);
+            link.setAttribute("rel", "stylesheet");
+            document.getElementsByTagName("head")[0].appendChild(link);
+        }
+    }
+
+    var removeLink = function (href) {
+        const links = [...document.getElementsByTagName('link')];
+        var nodes = links.filter(function (link) {
+            return link.href.indexOf(content) > -1;
+        });
+        for (var index = 0; index < nodes.length; index++) {
+            document.getElementsByTagName("head")[0].removeChild(nodes[index]);
+        }
+    }
+
+    window.BootstrapBlazorModules = {
+        load: load,
+        addScript: addScript,
+        removeScript: removeScript,
+        addLink: addLink,
+        removeLink: removeLink
+    };
 })(jQuery);

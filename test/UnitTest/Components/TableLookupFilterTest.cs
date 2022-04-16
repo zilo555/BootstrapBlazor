@@ -94,4 +94,38 @@ public class TableLookupFilterTest : BootstrapBlazorTestBase
         cut.InvokeAsync(() => condtions = cut.FindComponent<LookupFilter>().Instance.GetFilterConditions());
         Assert.Single(condtions);
     }
+
+    [Fact]
+    public void SetFilterConditions_Ok()
+    {
+        var cut = Context.RenderComponent<LookupFilter>(pb =>
+        {
+            pb.Add(a => a.Type, typeof(bool));
+            pb.Add(a => a.Lookup, new List<SelectedItem>()
+            {
+                new SelectedItem("true", "True"),
+                new SelectedItem("false", "False")
+            });
+        });
+
+        var filter = cut.Instance;
+        var conditions = filter.GetFilterConditions();
+        Assert.Empty(conditions);
+
+        var newConditions = new List<FilterKeyValueAction>
+        {
+            new FilterKeyValueAction() { FieldValue = true }
+        };
+        filter.SetFilterConditions(newConditions);
+        conditions = filter.GetFilterConditions();
+        Assert.Single(conditions);
+
+        newConditions = new List<FilterKeyValueAction>
+        {
+            new FilterKeyValueAction() { FieldValue = null }
+        };
+        filter.SetFilterConditions(newConditions);
+        conditions = filter.GetFilterConditions();
+        Assert.Empty(conditions);
+    }
 }
