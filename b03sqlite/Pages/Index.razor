@@ -21,6 +21,13 @@
         </Table>
 
         @code{
+            // 增加 NullableBoolItems 标签
+            // 目前设置 可以通过以下几种方式来附件 bool? 类型数据源
+            // Items
+            // Lookup
+            // LookupService LookupServiceUp
+            // 设置 NullableBoolItems 标签
+
             // 由于使用了FreeSql ORM 数据服务,可以直接取对象
             [Inject] IFreeSql? fsql { get; set; }
             [Inject] ToastService? toastService { get; set; }
