@@ -33,7 +33,19 @@ public class WeatherForecast
     [DisplayName("显示库存")]
     [NullableBoolItems(NullValueDisplayText = "请选择 ...", TrueValueDisplayText = "已盘库", FalseValueDisplayText = "未盘库")]
     public bool? ShowStock { get; set; }
-
+    
+    [DisplayName("未审批/价格隐藏2")]
+    public bool? HidePrice2 { get => hidePrice ?? false; set => hidePrice = value; }
+ 
+    [DisplayName("显示库存4")]
+    [AutoGenerateColumn(ComponentType =typeof( Switch))]
+    public bool? ShowStock4 { get; set; }
+ 
+    [DisplayName("显示库存5")]
+    [NullableBoolItems(NullValueDisplayText = "请选择 ...", TrueValueDisplayText = "已盘库", FalseValueDisplayText = "未盘库")]
+    [AutoGenerateColumn(ComponentType =typeof( Switch))]
+    public bool? ShowStock5 { get; set; }
+    
     [DisplayName("显示库存2")]
     public bool ShowStock2 { get; set; }
 
