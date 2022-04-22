@@ -33,6 +33,22 @@ public static class Utility
     public static string GetDisplayName(Type modelType, string fieldName) => CacheManager.GetDisplayName(modelType, fieldName);
 
     /// <summary>
+    /// 获取资源文件中 NullableBoolItemsAttribute 标签名称方法
+    /// </summary>
+    /// <param name="model">模型实例</param>
+    /// <param name="fieldName">字段名称</param>
+    /// <returns></returns>
+    public static IEnumerable<SelectedItem> GetNullableBoolItems(object model, string fieldName) => GetNullableBoolItems(model.GetType(), fieldName);
+
+    /// <summary>
+    /// 获取资源文件中 NullableBoolItemsAttribute 标签名称方法
+    /// </summary>
+    /// <param name="modelType">模型实例</param>
+    /// <param name="fieldName">字段名称</param>
+    /// <returns></returns>
+    public static IEnumerable<SelectedItem> GetNullableBoolItems(Type modelType, string fieldName) => CacheManager.GetNullableBoolItems(modelType, fieldName);
+
+    /// <summary>
     /// 获得 指定模型标记 <see cref="KeyAttribute"/> 的属性值
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
@@ -324,30 +340,36 @@ public static class Utility
             builder.AddAttribute(8, nameof(CheckboxList<IEnumerable<string>>.Items), item.Items.Clone());
         }
 
+        // Nullabl<bool?>
+        if (fieldType == typeof(bool?) && lookup == null && item.Items == null)
+        {
+            builder.AddAttribute(9, nameof(Select<bool?>.Items), GetNullableBoolItems(model, fieldName));
+        }
+
         // Lookup
         if (lookup != null && item.Items == null)
         {
-            builder.AddAttribute(9, nameof(Select<SelectedItem>.Items), lookup.Clone());
-            builder.AddAttribute(10, nameof(Select<SelectedItem>.StringComparison), item.LookupStringComparison);
+            builder.AddAttribute(10, nameof(Select<SelectedItem>.Items), lookup.Clone());
+            builder.AddAttribute(11, nameof(Select<SelectedItem>.StringComparison), item.LookupStringComparison);
         }
 
         // 增加非枚举类,手动设定 ComponentType 为 Select 并且 Data 有值 自动生成下拉框
         if (item.Items != null && item.ComponentType == typeof(Select<>).MakeGenericType(fieldType))
         {
-            builder.AddAttribute(11, nameof(Select<SelectedItem>.Items), item.Items.Clone());
+            builder.AddAttribute(12, nameof(Select<SelectedItem>.Items), item.Items.Clone());
         }
 
         // 设置 SkipValidate 参数
         if (IsValidatableComponent(componentType))
         {
-            builder.AddAttribute(12, nameof(IEditorItem.SkipValidate), item.SkipValidate);
+            builder.AddAttribute(13, nameof(IEditorItem.SkipValidate), item.SkipValidate);
         }
 
-        builder.AddMultipleAttributes(13, CreateMultipleAttributes(fieldType, model, fieldName, item));
+        builder.AddMultipleAttributes(14, CreateMultipleAttributes(fieldType, model, fieldName, item));
 
         if (item.ComponentParameters != null)
         {
-            builder.AddMultipleAttributes(14, item.ComponentParameters);
+            builder.AddMultipleAttributes(15, item.ComponentParameters);
         }
         builder.CloseComponent();
     }
@@ -428,6 +450,10 @@ public static class Utility
         else if (IsCheckboxList(type))
         {
             ret = typeof(CheckboxList<IEnumerable<string>>);
+        }
+        else if (fieldType == typeof(bool?))
+        {
+            ret = typeof(Select<bool?>);
         }
         else
         {
