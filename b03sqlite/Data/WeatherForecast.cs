@@ -26,10 +26,12 @@ public class WeatherForecast
 
 
     [DisplayName("未审批/价格隐藏")]
+    [NullableBoolItems(NullValueDisplayText = "未设置", TrueValueDisplayText = "价格隐藏", FalseValueDisplayText = "未审批")]
     public bool? HidePrice { get => hidePrice ?? false; set => hidePrice = value; }
     bool? hidePrice = true;
 
     [DisplayName("显示库存")]
+    [NullableBoolItems(NullValueDisplayText = "请选择 ...", TrueValueDisplayText = "已盘库", FalseValueDisplayText = "未盘库")]
     public bool? ShowStock { get; set; }
 
     [DisplayName("显示库存2")]
