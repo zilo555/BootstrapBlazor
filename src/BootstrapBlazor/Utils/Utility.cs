@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq.Expressions;
@@ -335,41 +336,52 @@ public static class Utility
             }
         }
 
+        if (componentType == typeof(NullSwitch) && TryGetProperty(model.GetType(), fieldName, out var propertyInfo))
+        {
+            // 读取默认值
+            var defaultValueAttr = propertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValueAttr != null)
+            {
+                var dv = defaultValueAttr.Value is bool v && v;
+                builder.AddAttribute(8, nameof(NullSwitch.DefaultValueWhenNull), dv);
+            }
+        }
+
         if (IsCheckboxList(fieldType, componentType) && item.Items != null)
         {
-            builder.AddAttribute(8, nameof(CheckboxList<IEnumerable<string>>.Items), item.Items.Clone());
+            builder.AddAttribute(9, nameof(CheckboxList<IEnumerable<string>>.Items), item.Items.Clone());
         }
 
         // Nullabl<bool?>
         if (fieldType == typeof(bool?) && lookup == null && item.Items == null)
         {
-            builder.AddAttribute(9, nameof(Select<bool?>.Items), GetNullableBoolItems(model, fieldName));
+            builder.AddAttribute(10, nameof(Select<bool?>.Items), GetNullableBoolItems(model, fieldName));
         }
 
         // Lookup
         if (lookup != null && item.Items == null)
         {
-            builder.AddAttribute(10, nameof(Select<SelectedItem>.Items), lookup.Clone());
-            builder.AddAttribute(11, nameof(Select<SelectedItem>.StringComparison), item.LookupStringComparison);
+            builder.AddAttribute(11, nameof(Select<SelectedItem>.Items), lookup.Clone());
+            builder.AddAttribute(12, nameof(Select<SelectedItem>.StringComparison), item.LookupStringComparison);
         }
 
         // 增加非枚举类,手动设定 ComponentType 为 Select 并且 Data 有值 自动生成下拉框
         if (item.Items != null && item.ComponentType == typeof(Select<>).MakeGenericType(fieldType))
         {
-            builder.AddAttribute(12, nameof(Select<SelectedItem>.Items), item.Items.Clone());
+            builder.AddAttribute(13, nameof(Select<SelectedItem>.Items), item.Items.Clone());
         }
 
         // 设置 SkipValidate 参数
         if (IsValidatableComponent(componentType))
         {
-            builder.AddAttribute(13, nameof(IEditorItem.SkipValidate), item.SkipValidate);
+            builder.AddAttribute(14, nameof(IEditorItem.SkipValidate), item.SkipValidate);
         }
 
-        builder.AddMultipleAttributes(14, CreateMultipleAttributes(fieldType, model, fieldName, item));
+        builder.AddMultipleAttributes(15, CreateMultipleAttributes(fieldType, model, fieldName, item));
 
         if (item.ComponentParameters != null)
         {
-            builder.AddMultipleAttributes(15, item.ComponentParameters);
+            builder.AddMultipleAttributes(16, item.ComponentParameters);
         }
         builder.CloseComponent();
     }
