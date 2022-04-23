@@ -38,12 +38,13 @@ public class WeatherForecast
     public bool? HidePrice2 { get => hidePrice ?? false; set => hidePrice = value; }
  
     [DisplayName("显示库存4")]
-    [AutoGenerateColumn(ComponentType =typeof( Switch))]
+    [AutoGenerateColumn(ComponentType =typeof(NullSwitch))]
     public bool? ShowStock4 { get; set; }
  
     [DisplayName("显示库存5")]
     [NullableBoolItems(NullValueDisplayText = "请选择 ...", TrueValueDisplayText = "已盘库", FalseValueDisplayText = "未盘库")]
-    [AutoGenerateColumn(ComponentType =typeof( Switch))]
+    [AutoGenerateColumn(ComponentType =typeof(NullSwitch))]
+    [DefaultValue(true)]
     public bool? ShowStock5 { get; set; }
     
     [DisplayName("显示库存2")]
