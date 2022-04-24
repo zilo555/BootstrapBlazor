@@ -79,6 +79,21 @@
     --bs-btn-primary-disabled-color: #fff;
     --bs-btn-primary-disabled-bg-color: #009ef7;
     --bs-btn-primary-disabled-border-color: #009ef7;
+    --bs-btn-secondary-color: #000;
+    --bs-btn-secondary-bg-color: #E4E6EF;
+    --bs-btn-secondary-border-color: #E4E6EF;
+    --bs-btn-secondary-hover-color: #000;
+    --bs-btn-secondary-hover-bg-color: #e8eaf1;
+    --bs-btn-secondary-hover-border-color: #e7e9f1;
+    --bs-btn-secondary-focus-color: #000;
+    --bs-btn-secondary-focus-bg-color: #e8eaf1;
+    --bs-btn-secondary-focus-border-color: #e7e9f1;
+    --bs-btn-secondary-active-color: #000;
+    --bs-btn-secondary-active-bg-color: #e9ebf2;
+    --bs-btn-secondary-active-border-color: #e7e9f1;
+    --bs-btn-secondary-disabled-color: #000;
+    --bs-btn-secondary-disabled-bg-color: #E4E6EF;
+    --bs-btn-secondary-disabled-border-color: #E4E6EF;
 }
 
 .btn,
@@ -269,33 +284,33 @@
     }
 
 .btn-secondary {
-    color: #000;
-    background-color: var(--bs-secondary);
-    border-color: var(--bs-secondary);
+    color: var(--bs-btn-secondary-color);
+    background-color: var(--bs-btn-secondary-bg-color);
+    border-color: var(--bs-btn-secondary-border-color);
 }
 
     .btn-secondary:hover {
-        color: #000;
-        background-color: #e8eaf1;
-        border-color: #e7e9f1;
+        color: var(--bs-btn-secondary-hover-color);
+        background-color: var(--bs-btn-secondary-hover-bg-color);
+        border-color: var(--bs-btn-secondary-hover-border-color);
     }
 
     .btn-check:focus + .btn-secondary, .btn-secondary:focus {
-        color: #000;
-        background-color: #e8eaf1;
-        border-color: #e7e9f1;
+        color: var(--bs-btn-secondary-focus-color);
+        background-color: var(--bs-btn-secondary-focus-bg-color);
+        border-color: var(--bs-btn-secondary-focus-border-color);
     }
 
     .btn-check:active + .btn-secondary, .btn-check:checked + .btn-secondary, .btn-secondary.active, .btn-secondary:active, .show > .btn-secondary.dropdown-toggle {
-        color: #000;
-        background-color: #e9ebf2;
-        border-color: #e7e9f1;
+        color: var(--bs-btn-secondary-active-color);
+        background-color: var(--bs-btn-secondary-active-bg-color);
+        border-color: var(--bs-btn-secondary-active-border-color);
     }
 
     .btn-secondary.disabled, .btn-secondary:disabled {
-        color: #000;
-        background-color: var(--bs-secondary);
-        border-color: var(--bs-secondary);
+        color: var(--bs-btn-secondary-disabled-color);
+        background-color: var(--bs-btn-secondary-disabled-bg-color);
+        border-color: var(--bs-btn-secondary-disabled-border-color);
     }
 
 .btn-success {
