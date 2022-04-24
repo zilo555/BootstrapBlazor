@@ -13,6 +13,10 @@
     "inputFiles": [ "wwwroot/src/motronic.css" ]
   },
   {
+    "outputFileName": "wwwroot/css/material.min.css",
+    "inputFiles": [ "wwwroot/src/material.css" ]
+  },
+  {
     "outputFileName": "wwwroot/bundle/bootstrap.blazor.min.js",
     "inputFiles": [
       "wwwroot/lib/extensions/*.js",
