@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // Website: https://www.blazor.zone or https://argozhang.github.io/
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace BootstrapBlazor.Components;
@@ -9,19 +10,17 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// Toast 弹出窗服务类
 /// </summary>
-public class ToastService : BootstrapServiceBase<ToastOption>, IDisposable
+public class ToastService : BootstrapServiceBase<ToastOption>
 {
-    private readonly IDisposable _optionsReloadToken;
-    private BootstrapBlazorOptions _option;
+    private IServiceProvider Provider { get; }
 
     /// <summary>
     /// 构造方法
     /// </summary>
-    /// <param name="option"></param>
-    public ToastService(IOptionsMonitor<BootstrapBlazorOptions> option)
+    /// <param name="provider"></param>
+    public ToastService(IServiceProvider provider)
     {
-        _option = option.CurrentValue;
-        _optionsReloadToken = option.OnChange(op => _option = op);
+        Provider = provider;
     }
 
     /// <summary>
@@ -31,9 +30,10 @@ public class ToastService : BootstrapServiceBase<ToastOption>, IDisposable
     /// <param name="toast">指定弹窗组件 默认为 null 使用 <see cref="BootstrapBlazorRoot"/> 组件内置弹窗组件</param>
     public async Task Show(ToastOption option, Toast? toast = null)
     {
-        if (!option.ForceDelay && _option.ToastDelay != 0)
+        var op = Provider.GetRequiredService<IOptionsMonitor<BootstrapBlazorOptions>>().CurrentValue;
+        if (!option.ForceDelay && op.ToastDelay != 0)
         {
-            option.Delay = _option.ToastDelay;
+            option.Delay = op.ToastDelay;
         }
         await Invoke(option, toast);
     }
