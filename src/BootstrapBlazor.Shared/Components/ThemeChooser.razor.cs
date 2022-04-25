@@ -32,7 +32,7 @@ public partial class ThemeChooser
 
     [Inject]
     [NotNull]
-    private IOptions<BootstrapBlazorOptions>? BootstrapOptions { get; set; }
+    private IOptionsMonitor<BootstrapBlazorOptions>? BootstrapOptions { get; set; }
 
     [Inject]
     [NotNull]
@@ -47,7 +47,7 @@ public partial class ThemeChooser
 
         Title ??= Localizer[nameof(Title)];
         HeaderText ??= Localizer[nameof(HeaderText)];
-        Themes = BootstrapOptions.Value.Themes.Select(kv => new SelectedItem(kv.Value, kv.Key));
+        Themes = BootstrapOptions.CurrentValue.Themes.Select(kv => new SelectedItem(kv.Value, kv.Key));
         SiteOptions.Value.CurrentTheme = Themes.FirstOrDefault(i => i.Text == "Motronic")?.Value ?? "";
     }
 
