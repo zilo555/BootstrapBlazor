@@ -72,21 +72,22 @@ public static class BootstrapBlazorServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection ConfigureBootstrapBlazorOption(this IServiceCollection services, Action<BootstrapBlazorOptions>? options = null)
     {
-        services.AddOptions();
-        services.TryAddSingleton<IOptionsChangeTokenSource<BootstrapBlazorOptions>, ConfigurationChangeTokenSource<BootstrapBlazorOptions>>();
-        services.TryAddSingleton<IConfigureOptions<BootstrapBlazorOptions>, ConfigureOptions<BootstrapBlazorOptions>>();
-        services.Configure<BootstrapBlazorOptions>(op =>
+        services.AddOptionsMonitor<BootstrapBlazorOptions>();
+        if (options != null)
         {
-            options?.Invoke(op);
-
-            // 设置默认文化信息
-            if (op.DefaultCultureInfo != null)
+            services.Configure<BootstrapBlazorOptions>(op =>
             {
-                var culture = new CultureInfo(op.DefaultCultureInfo);
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-            }
-        });
+                options?.Invoke(op);
+
+                // 设置默认文化信息
+                if (op.DefaultCultureInfo != null)
+                {
+                    var culture = new CultureInfo(op.DefaultCultureInfo);
+                    CultureInfo.DefaultThreadCurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentUICulture = culture;
+                }
+            });
+        }
         return services;
     }
 
@@ -98,12 +99,8 @@ public static class BootstrapBlazorServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection ConfigureIPLocatorOption(this IServiceCollection services, Action<IPLocatorOption>? locatorAction = null)
     {
-        if (locatorAction == null)
-        {
-            services.TryAddSingleton<IOptionsChangeTokenSource<IPLocatorOption>, ConfigurationChangeTokenSource<IPLocatorOption>>();
-            services.TryAddSingleton<IConfigureOptions<IPLocatorOption>, ConfigureOptions<IPLocatorOption>>();
-        }
-        else
+        services.AddOptionsMonitor<IPLocatorOption>();
+        if (locatorAction != null)
         {
             services.Configure(locatorAction);
         }
@@ -118,12 +115,8 @@ public static class BootstrapBlazorServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection ConfigureJsonLocalizationOptions(this IServiceCollection services, Action<JsonLocalizationOptions>? localizationAction = null)
     {
-        if (localizationAction == null)
-        {
-            services.TryAddSingleton<IOptionsChangeTokenSource<JsonLocalizationOptions>, ConfigurationChangeTokenSource<JsonLocalizationOptions>>();
-            services.TryAddSingleton<IConfigureOptions<JsonLocalizationOptions>, ConfigureOptions<JsonLocalizationOptions>>();
-        }
-        else
+        services.AddOptionsMonitor<JsonLocalizationOptions>();
+        if (localizationAction != null)
         {
             services.Configure(localizationAction);
         }
