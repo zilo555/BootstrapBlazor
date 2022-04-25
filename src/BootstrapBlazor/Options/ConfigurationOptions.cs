@@ -10,13 +10,13 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// BlazorConfigureFromConfigurationOptions 配置实现类
 /// </summary>
-public class BlazorConfigureFromConfigurationOptions<TOption> : ConfigureFromConfigurationOptions<TOption> where TOption : class
+public class ConfigurationOptions<TOption> : ConfigureFromConfigurationOptions<TOption> where TOption : class
 {
     /// <summary>
     /// 构造函数
     /// </summary>
     /// <param name="config"></param>
-    public BlazorConfigureFromConfigurationOptions(IConfiguration config)
+    public ConfigurationOptions(IConfiguration config)
         : base(config.GetSection(typeof(TOption).Name))
     {
 
