@@ -22,7 +22,7 @@ public static class ServicesExtensions
     {
         services.AddSingleton<WeatherForecastService>();
         services.AddSingleton<VersionService>();
-        services.AddSingleton<CodeSnippetService>();
+        services.AddScoped<CodeSnippetService>();
         services.AddSingleton(typeof(IDataService<>), typeof(TableDemoDataService<>));
         services.AddSingleton(typeof(ILookUpService), typeof(DemoLookUpService));
 
