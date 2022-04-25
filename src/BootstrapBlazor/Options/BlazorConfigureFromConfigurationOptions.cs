@@ -8,15 +8,15 @@ using Microsoft.Extensions.Options;
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// 
+/// BlazorConfigureFromConfigurationOptions 配置实现类
 /// </summary>
-public class ConfigureOptions<TOption> : ConfigureFromConfigurationOptions<TOption> where TOption : class
+public class BlazorConfigureFromConfigurationOptions<TOption> : ConfigureFromConfigurationOptions<TOption> where TOption : class
 {
     /// <summary>
-    /// 
+    /// 构造函数
     /// </summary>
     /// <param name="config"></param>
-    public ConfigureOptions(IConfiguration config)
+    public BlazorConfigureFromConfigurationOptions(IConfiguration config)
         : base(config.GetSection(typeof(TOption).Name))
     {
 
