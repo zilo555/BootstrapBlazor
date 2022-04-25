@@ -68,26 +68,22 @@ public static class BootstrapBlazorServiceCollectionExtensions
     /// BootstrapBlazorOptions 扩展配置方法
     /// </summary>
     /// <param name="services"></param>
-    /// <param name="options"></param>
+    /// <param name="configureOptions"></param>
     /// <returns></returns>
-    public static IServiceCollection ConfigureBootstrapBlazorOption(this IServiceCollection services, Action<BootstrapBlazorOptions>? options = null)
+    private static IServiceCollection ConfigureBootstrapBlazorOption(this IServiceCollection services, Action<BootstrapBlazorOptions>? configureOptions = null)
     {
         services.AddOptionsMonitor<BootstrapBlazorOptions>();
-        if (options != null)
+        services.Configure<BootstrapBlazorOptions>(op =>
         {
-            services.Configure<BootstrapBlazorOptions>(op =>
+            // 设置默认文化信息
+            if (op.DefaultCultureInfo != null)
             {
-                options?.Invoke(op);
-
-                // 设置默认文化信息
-                if (op.DefaultCultureInfo != null)
-                {
-                    var culture = new CultureInfo(op.DefaultCultureInfo);
-                    CultureInfo.DefaultThreadCurrentCulture = culture;
-                    CultureInfo.DefaultThreadCurrentUICulture = culture;
-                }
-            });
-        }
+                var culture = new CultureInfo(op.DefaultCultureInfo);
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+            }
+            configureOptions?.Invoke(op);
+        });
         return services;
     }
 
