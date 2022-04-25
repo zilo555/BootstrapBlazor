@@ -124,9 +124,8 @@ public static class BootstrapBlazorServiceCollectionExtensions
     /// </summary>
     /// <typeparam name="TOptions"></typeparam>
     /// <param name="services"></param>
-    /// <param name="options"></param>
     /// <returns></returns>
-    public static IServiceCollection AddOptionsMonitor<TOptions>(this IServiceCollection services, Action<TOptions>? options = null) where TOptions : class
+    public static IServiceCollection AddOptionsMonitor<TOptions>(this IServiceCollection services) where TOptions : class
     {
         services.AddOptions();
         services.TryAddSingleton<IOptionsChangeTokenSource<TOptions>, ConfigurationChangeTokenSource<TOptions>>();
