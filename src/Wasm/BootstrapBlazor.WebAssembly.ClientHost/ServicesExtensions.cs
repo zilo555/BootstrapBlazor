@@ -28,6 +28,8 @@ public static class ServicesExtensions
         {
             // 统一设置 Toast 组件自动消失时间
             options.ToastDelay = 4000;
+            options.FallbackCulture = "en";
+            options.SupportedCultures = new List<string> { "zh-CN", "en-US" };
             options.Themes.AddRange(new KeyValuePair<string, string>[]
             {
                 new("Ant Design (完善中)", "ant"),
@@ -46,13 +48,6 @@ public static class ServicesExtensions
         services.Configure<WebsiteOptions>(options =>
         {
             options.RepositoryUrl = "https://www.blazor.zone/api/docs/";
-        });
-
-        services.Configure<BootstrapBlazorOptions>(op =>
-        {
-            op.ToastDelay = 4000;
-            op.FallbackCulture = "en";
-            op.SupportedCultures = new List<string> { "zh-CN", "en-US" };
         });
 
         services.AddLocalization();
