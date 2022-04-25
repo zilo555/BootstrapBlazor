@@ -45,6 +45,11 @@ public partial class CultureChooser
         base.OnInitialized();
 
         Label ??= Localizer[nameof(Label)];
+
+        BootstrapOptions.OnChange(async op =>
+        {
+            await InvokeAsync(StateHasChanged);
+        });
     }
 
     private async Task SetCulture(SelectedItem item)
