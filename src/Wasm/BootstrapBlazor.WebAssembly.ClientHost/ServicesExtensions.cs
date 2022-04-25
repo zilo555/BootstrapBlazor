@@ -26,20 +26,20 @@ public static class ServicesExtensions
         // 增加 BootstrapBlazor 组件
         services.AddBootstrapBlazor(options =>
         {
-                // 统一设置 Toast 组件自动消失时间
-                options.ToastDelay = 4000;
+            // 统一设置 Toast 组件自动消失时间
+            options.ToastDelay = 4000;
             options.Themes.AddRange(new KeyValuePair<string, string>[]
             {
-                    new("Ant Design (完善中)", "ant"),
-                    new("LayUI (完善中)", "layui")
+                new("Ant Design (完善中)", "ant"),
+                new("LayUI (完善中)", "layui")
             });
         }, options =>
         {
-                // 附加自己的 json 多语言文化资源文件 如 zh-TW.json
-                options.AdditionalJsonAssemblies = new Assembly[]
+            // 附加自己的 json 多语言文化资源文件 如 zh-TW.json
+            options.AdditionalJsonAssemblies = new Assembly[]
             {
-                    typeof(BootstrapBlazor.Shared.App).Assembly,
-                    typeof(BootstrapBlazor.Components.Chart).Assembly
+                typeof(BootstrapBlazor.Shared.App).Assembly,
+                typeof(BootstrapBlazor.Components.Chart).Assembly
             };
         });
 
