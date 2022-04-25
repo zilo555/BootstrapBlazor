@@ -35,6 +35,7 @@ public static class BootstrapBlazorServiceCollectionExtensions
         services.TryAddSingleton<IComponentIdGenerator, DefaultIdGenerator>();
         services.TryAddSingleton(typeof(IDispatchService<>), typeof(DefaultDispatchService<>));
         services.TryAddSingleton(typeof(ILookUpService), typeof(NullLookUpService));
+
         services.TryAddScoped<ITableExcelExport, DefaultExcelExport>();
         services.TryAddScoped(typeof(IDataService<>), typeof(NullDataService<>));
         services.TryAddScoped<TabItemTextOptions>();
@@ -54,36 +55,26 @@ public static class BootstrapBlazorServiceCollectionExtensions
         services.TryAddScoped<ClipboardService>();
         services.TryAddScoped<ResizeNotificationService>();
 
-        services.TryAddSingleton<IConfigureOptions<BootstrapBlazorOptions>, ConfigureOptions<BootstrapBlazorOptions>>();
-        services.ConfigureBootstrapBlazorOption(configureOptions);
-
-        services.TryAddSingleton<IIPLocatorProvider, DefaultIPLocatorProvider>();
-        services.TryAddSingleton<IConfigureOptions<IPLocatorOption>, ConfigureOptions<IPLocatorOption>>();
-
+        services.TryAddScoped<IIPLocatorProvider, DefaultIPLocatorProvider>();
         services.TryAddScoped<IReconnectorProvider, ReconnectorProvider>();
+
+        services.ConfigureBootstrapBlazorOption(configureOptions);
+        services.ConfigureIPLocatorOption();
+        services.ConfigureJsonLocalizationOptions();
         return services;
     }
 
     /// <summary>
-    ///
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="locatorAction"></param>
-    /// <returns></returns>
-    public static IServiceCollection ConfigureIPLocatorOption(this IServiceCollection services, Action<IPLocatorOption> locatorAction)
-    {
-        services.Configure<IPLocatorOption>(locatorAction);
-        return services;
-    }
-
-    /// <summary>
-    ///
+    /// BootstrapBlazorOptions 扩展配置方法
     /// </summary>
     /// <param name="services"></param>
     /// <param name="options"></param>
     /// <returns></returns>
     public static IServiceCollection ConfigureBootstrapBlazorOption(this IServiceCollection services, Action<BootstrapBlazorOptions>? options = null)
     {
+        services.AddOptions();
+        services.TryAddSingleton<IOptionsChangeTokenSource<BootstrapBlazorOptions>, ConfigurationChangeTokenSource<BootstrapBlazorOptions>>();
+        services.TryAddSingleton<IConfigureOptions<BootstrapBlazorOptions>, ConfigurationOptions<BootstrapBlazorOptions>>();
         services.Configure<BootstrapBlazorOptions>(op =>
         {
             options?.Invoke(op);
@@ -100,14 +91,42 @@ public static class BootstrapBlazorServiceCollectionExtensions
     }
 
     /// <summary>
-    ///
+    /// IPLocatorOption 扩展配置方法
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="locatorAction"></param>
+    /// <returns></returns>
+    public static IServiceCollection ConfigureIPLocatorOption(this IServiceCollection services, Action<IPLocatorOption>? locatorAction = null)
+    {
+        if (locatorAction == null)
+        {
+            services.TryAddSingleton<IOptionsChangeTokenSource<IPLocatorOption>, ConfigurationChangeTokenSource<IPLocatorOption>>();
+            services.TryAddSingleton<IConfigureOptions<IPLocatorOption>, ConfigurationOptions<IPLocatorOption>>();
+        }
+        else
+        {
+            services.Configure(locatorAction);
+        }
+        return services;
+    }
+
+    /// <summary>
+    /// JsonLocalizationOptions 扩展配置方法
     /// </summary>
     /// <param name="services"></param>
     /// <param name="localizationAction"></param>
     /// <returns></returns>
-    public static IServiceCollection ConfigureJsonLocalizationOptions(this IServiceCollection services, Action<JsonLocalizationOptions> localizationAction)
+    public static IServiceCollection ConfigureJsonLocalizationOptions(this IServiceCollection services, Action<JsonLocalizationOptions>? localizationAction = null)
     {
-        services.Configure(localizationAction);
+        if (localizationAction == null)
+        {
+            services.TryAddSingleton<IOptionsChangeTokenSource<JsonLocalizationOptions>, ConfigurationChangeTokenSource<JsonLocalizationOptions>>();
+            services.TryAddSingleton<IConfigureOptions<JsonLocalizationOptions>, ConfigurationOptions<JsonLocalizationOptions>>();
+        }
+        else
+        {
+            services.Configure(localizationAction);
+        }
         return services;
     }
 }
