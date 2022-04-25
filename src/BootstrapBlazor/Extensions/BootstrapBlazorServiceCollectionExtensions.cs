@@ -74,7 +74,7 @@ public static class BootstrapBlazorServiceCollectionExtensions
     {
         services.AddOptions();
         services.TryAddSingleton<IOptionsChangeTokenSource<BootstrapBlazorOptions>, ConfigurationChangeTokenSource<BootstrapBlazorOptions>>();
-        services.TryAddSingleton<IConfigureOptions<BootstrapBlazorOptions>, ConfigurationOptions<BootstrapBlazorOptions>>();
+        services.TryAddSingleton<IConfigureOptions<BootstrapBlazorOptions>, ConfigureOptions<BootstrapBlazorOptions>>();
         services.Configure<BootstrapBlazorOptions>(op =>
         {
             options?.Invoke(op);
@@ -101,7 +101,7 @@ public static class BootstrapBlazorServiceCollectionExtensions
         if (locatorAction == null)
         {
             services.TryAddSingleton<IOptionsChangeTokenSource<IPLocatorOption>, ConfigurationChangeTokenSource<IPLocatorOption>>();
-            services.TryAddSingleton<IConfigureOptions<IPLocatorOption>, ConfigurationOptions<IPLocatorOption>>();
+            services.TryAddSingleton<IConfigureOptions<IPLocatorOption>, ConfigureOptions<IPLocatorOption>>();
         }
         else
         {
@@ -121,7 +121,7 @@ public static class BootstrapBlazorServiceCollectionExtensions
         if (localizationAction == null)
         {
             services.TryAddSingleton<IOptionsChangeTokenSource<JsonLocalizationOptions>, ConfigurationChangeTokenSource<JsonLocalizationOptions>>();
-            services.TryAddSingleton<IConfigureOptions<JsonLocalizationOptions>, ConfigurationOptions<JsonLocalizationOptions>>();
+            services.TryAddSingleton<IConfigureOptions<JsonLocalizationOptions>, ConfigureOptions<JsonLocalizationOptions>>();
         }
         else
         {

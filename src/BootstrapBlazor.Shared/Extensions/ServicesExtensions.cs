@@ -24,7 +24,7 @@ public static class ServicesExtensions
         services.AddSingleton<WeatherForecastService>();
         services.AddSingleton<VersionService>();
         services.AddSingleton<CodeSnippetService>();
-        services.AddSingleton<IConfigureOptions<WebsiteOptions>, ConfigurationOptions<WebsiteOptions>>();
+        services.AddSingleton<IConfigureOptions<WebsiteOptions>, ConfigureOptions<WebsiteOptions>>();
         services.AddSingleton(typeof(IDataService<>), typeof(TableDemoDataService<>));
         services.AddSingleton(typeof(ILookUpService), typeof(DemoLookUpService));
 
