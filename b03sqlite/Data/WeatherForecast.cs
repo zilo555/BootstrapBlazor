@@ -39,6 +39,7 @@ public class WeatherForecast
  
     [DisplayName("显示库存4")]
     [AutoGenerateColumn(ComponentType =typeof(NullSwitch))]
+    [DefaultValue(false)]
     public bool? ShowStock4 { get; set; }
  
     [DisplayName("显示库存5")]
