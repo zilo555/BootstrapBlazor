@@ -5,8 +5,6 @@
 using BootstrapBlazor.Components;
 using BootstrapBlazor.Shared.Common;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
 namespace BootstrapBlazor.Shared.Samples;
@@ -35,18 +33,6 @@ public sealed partial class Toasts
     [NotNull]
     private BootstrapBlazorRoot? Root { get; set; }
 
-    private string? ToastDelayString1 { get; set; }
-
-    private string? ToastDelayString2 { get; set; }
-
-    [Inject]
-    [NotNull]
-    private IServiceProvider? Provider { get; set; }
-
-    [Inject]
-    [NotNull]
-    private IOptionsMonitor<BootstrapBlazorOptions>? Options { get; set; }
-
     /// <summary>
     /// OnInitialized 方法
     /// </summary>
@@ -60,10 +46,6 @@ public sealed partial class Toasts
         Options4 = new ToastOption { Category = ToastCategory.Warning, Title = "警告信息", IsAutoHide = false, Content = "信息提示弹窗，4 秒后自动关闭" };
 
         Toast = Root.ToastContainer;
-
-        ToastDelayString1 = Provider.GetRequiredService<IOptionsMonitor<BootstrapBlazorOptions>>().CurrentValue.ToastDelay.ToString();
-
-        ToastDelayString2 = Options.CurrentValue.ToastDelay.ToString();
     }
 
     /// <summary>
