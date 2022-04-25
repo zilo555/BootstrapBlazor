@@ -28,7 +28,6 @@ var themes = builder.Configuration.GetSection("Themes")
 builder.Services.ConfigureBootstrapBlazorOption(options =>
 {
     // 统一设置 Toast 组件自动消失时间
-    options.ToastDelay = 4000;
     options.Themes.AddRange(themes);
 });
 
