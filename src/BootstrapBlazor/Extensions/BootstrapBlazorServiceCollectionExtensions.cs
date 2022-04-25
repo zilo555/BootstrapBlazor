@@ -129,4 +129,20 @@ public static class BootstrapBlazorServiceCollectionExtensions
         }
         return services;
     }
+
+    /// <summary>
+    /// 增加支持热更新配置类
+    /// </summary>
+    /// <typeparam name="TOptions"></typeparam>
+    /// <param name="services"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddOptionsMonitor<TOptions>(this IServiceCollection services, Action<TOptions>? options = null) where TOptions : class
+    {
+        services.AddOptions();
+        services.TryAddSingleton<IOptionsChangeTokenSource<TOptions>, ConfigurationChangeTokenSource<TOptions>>();
+        services.TryAddSingleton<IConfigureOptions<TOptions>, ConfigureOptions<TOptions>>();
+        return services;
+
+    }
 }
