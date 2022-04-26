@@ -78,6 +78,7 @@ public class TableLookupFilterTest : BootstrapBlazorTestBase
                     builder.AddAttribute(index++, nameof(TableColumn<Foo, bool>.Field), foo.Complete);
                     builder.AddAttribute(index++, nameof(TableColumn<Foo, bool>.FieldExpression), foo.GenerateValueExpression(nameof(foo.Complete), typeof(bool)));
                     builder.AddAttribute(index++, nameof(TableColumn<Foo, bool>.Filterable), true);
+                    builder.AddAttribute(index++, nameof(TableColumn<Foo, bool>.LookupStringComparison), StringComparison.OrdinalIgnoreCase);
                     builder.AddAttribute(index++, nameof(TableColumn<Foo, bool>.Lookup), new List<SelectedItem>()
                     {
                         new SelectedItem("true", "True"),
@@ -96,7 +97,7 @@ public class TableLookupFilterTest : BootstrapBlazorTestBase
     }
 
     [Fact]
-    public void SetFilterConditions_Ok()
+    public async Task SetFilterConditions_Ok()
     {
         var cut = Context.RenderComponent<LookupFilter>(pb =>
         {
@@ -116,7 +117,7 @@ public class TableLookupFilterTest : BootstrapBlazorTestBase
         {
             new FilterKeyValueAction() { FieldValue = true }
         };
-        filter.SetFilterConditions(newConditions);
+        await filter.SetFilterConditionsAsync(newConditions);
         conditions = filter.GetFilterConditions();
         Assert.Single(conditions);
 
@@ -124,7 +125,7 @@ public class TableLookupFilterTest : BootstrapBlazorTestBase
         {
             new FilterKeyValueAction() { FieldValue = null }
         };
-        filter.SetFilterConditions(newConditions);
+        await filter.SetFilterConditionsAsync(newConditions);
         conditions = filter.GetFilterConditions();
         Assert.Empty(conditions);
     }

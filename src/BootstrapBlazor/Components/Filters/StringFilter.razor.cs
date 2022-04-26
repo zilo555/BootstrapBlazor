@@ -95,7 +95,7 @@ public partial class StringFilter
     /// <summary>
     /// Override existing filter conditions
     /// </summary>
-    public void SetFilterConditions(IEnumerable<FilterKeyValueAction> conditions)
+    public override async Task SetFilterConditionsAsync(IEnumerable<FilterKeyValueAction> conditions)
     {
         if (conditions.Any())
         {
@@ -127,5 +127,6 @@ public partial class StringFilter
                 Logic = second.FilterLogic;
             }
         }
+        await base.SetFilterConditionsAsync(conditions);
     }
 }

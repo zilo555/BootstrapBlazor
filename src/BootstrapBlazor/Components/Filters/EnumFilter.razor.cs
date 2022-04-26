@@ -85,7 +85,7 @@ public partial class EnumFilter
     /// <summary>
     /// Override existing filter conditions
     /// </summary>
-    public void SetFilterConditions(IEnumerable<FilterKeyValueAction> conditions)
+    public override async Task SetFilterConditionsAsync(IEnumerable<FilterKeyValueAction> conditions)
     {
         if (conditions.Any())
         {
@@ -100,5 +100,6 @@ public partial class EnumFilter
                 Value = "";
             }
         }
+        await base.SetFilterConditionsAsync(conditions);
     }
 }

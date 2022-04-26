@@ -84,10 +84,23 @@ public class TableStringFilterTest : BootstrapBlazorTestBase
         Assert.Equal("1", condtion.First().FieldValue);
         Assert.Equal(FilterAction.NotEqual, condtion.First().FilterAction);
         Assert.Equal(FilterLogic.And, condtion.First().FilterLogic);
+
+        searchFilterAction.Reset();
+        Assert.Null(searchFilterAction.Value);
+
+        searchFilterAction.SetFilterConditionsAsync(new List<FilterKeyValueAction>()
+        {
+            new FilterKeyValueAction()
+            {
+                FieldKey = "Test-Search",
+                FieldValue = "test"
+            }
+        });
+        Assert.Equal("test", searchFilterAction.Value);
     }
 
     [Fact]
-    public void SetFilterConditions_Ok()
+    public async Task SetFilterConditions_Ok()
     {
         var cut = Context.RenderComponent<StringFilter>();
         var filter = cut.Instance;
@@ -99,7 +112,7 @@ public class TableStringFilterTest : BootstrapBlazorTestBase
             new FilterKeyValueAction() { FieldValue = "test1" },
             new FilterKeyValueAction() { FieldValue = "test2" }
         };
-        filter.SetFilterConditions(newConditions);
+        await filter.SetFilterConditionsAsync(newConditions);
         conditions = filter.GetFilterConditions();
         Assert.Equal(2, conditions.Count());
 
@@ -108,7 +121,7 @@ public class TableStringFilterTest : BootstrapBlazorTestBase
             new FilterKeyValueAction() { FieldValue = true },
             new FilterKeyValueAction() { FieldValue = false }
         };
-        filter.SetFilterConditions(newConditions);
+        await filter.SetFilterConditionsAsync(newConditions);
         conditions = filter.GetFilterConditions();
         Assert.Empty(conditions);
 
@@ -117,7 +130,7 @@ public class TableStringFilterTest : BootstrapBlazorTestBase
             new FilterKeyValueAction() { FieldValue = "" },
             new FilterKeyValueAction() { FieldValue = "" }
         };
-        filter.SetFilterConditions(newConditions);
+        await filter.SetFilterConditionsAsync(newConditions);
         conditions = filter.GetFilterConditions();
         Assert.Empty(conditions);
     }
