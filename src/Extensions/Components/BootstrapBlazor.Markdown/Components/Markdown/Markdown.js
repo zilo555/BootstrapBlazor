@@ -21,11 +21,22 @@
                 delete value.enableHighlight;
                 const editor = toastui.Editor.factory(value);
                 $.data(el, 'editor', editor);
-                editor.on('change', function (){
-                    var val = editor.getMarkdown();
-                    var html = editor.getHTML();
-                    obj.invokeMethodAsync(method, [val, html]);
-                });
+                var timer;
+                editor.on('change',
+                    function() {
+                        // 清空计时器的方法
+                        clearTimeout(timer);
+
+                        // 创建一个计时器，开始倒计时，倒计时结束后执行内部的方法
+                        timer = setTimeout(function() {
+                                // 清除计时器，使下次事件不能进入到if中
+                                timer = null;
+                                var val = editor.getMarkdown();
+                                var html = editor.getHTML();
+                                obj.invokeMethodAsync(method, [val, html]);
+                            },
+                            100);
+                    });
             }
         }, 100);
     }
