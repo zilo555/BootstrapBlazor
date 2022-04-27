@@ -8,16 +8,6 @@
         editor.setMarkdown(value);
     }
     else {
-        $.extend(value, {
-            events: {
-                blur: function () {
-                    var editor = $.data(el, 'editor');
-                    var val = editor.getMarkdown();
-                    var html = editor.getHTML();
-                    obj.invokeMethodAsync(method, [val, html]);
-                }
-            }
-        });
 
         // 修复弹窗内初始化值不正确问题
         var handler = window.setInterval(function () {
@@ -31,6 +21,11 @@
                 delete value.enableHighlight;
                 const editor = toastui.Editor.factory(value);
                 $.data(el, 'editor', editor);
+                editor.on('change', function (){
+                    var val = editor.getMarkdown();
+                    var html = editor.getHTML();
+                    obj.invokeMethodAsync(method, [val, html]);
+                });
             }
         }, 100);
     }
