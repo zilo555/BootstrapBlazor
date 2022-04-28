@@ -1,0 +1,4 @@
+﻿.floating-provider {
+    position: fixed;
+    z-index: 1100;
+}
