@@ -1200,7 +1200,7 @@
     "Att7": "Whether to disable,Default is fasle"
   },
   "BootstrapBlazor.Shared.Samples.Floatings": {
-    "Title": "Floatin",
+    "Title": "Floating",
     "Describe": "A low-level toolkit to create floating elements. Tooltips, popovers, dropdowns, and more",
     "Tips0101": "Floating needs to set an anchor object. The objects and priorities supported by the anchor are as follows: <code> HtmlElement ID </code> > <code> elementreference </code> > <code> idcomponentbase </code> > <code> CSS selector </code> > <code> offset </code>. You can float around almost any element you want.",
     "Normal01": "Basic usage",

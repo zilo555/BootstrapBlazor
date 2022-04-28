@@ -197,9 +197,13 @@
         <Card>
             <CardHeader>@((MarkupString)Localizer["DemoAnchor0302"].Value)</CardHeader>
             <CardBody>
-                <Scroll Height="20rem">
-                    <EditorForms/>
-                </Scroll>
+                <Table Height="320" TItem="Foo" Items="@Items.Take(10)">
+                    <TableColumns>
+                        <TableColumn @bind-Field="@context.DateTime" Width="180" />
+                        <TableColumn @bind-Field="@context.Name" />
+                        <TableColumn @bind-Field="@context.Address" />
+                    </TableColumns>
+                </Table>
             </CardBody>
             <CardFooter>@((MarkupString)Localizer["DemoAnchor0303"].Value)</CardFooter>
         </Card>

@@ -6,6 +6,7 @@ using BootstrapBlazor.Components;
 using BootstrapBlazor.Shared.Common;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 
 namespace BootstrapBlazor.Shared.Samples;
@@ -47,7 +48,13 @@ public partial class Floatings
     /// <summary>
     /// 3
     /// </summary>
+    [Inject]
+    [NotNull]
+    private IStringLocalizer<Foo>? LocalizerFoo { get; set; }
     private bool Visible03 { get; set; }
+
+    [NotNull]
+    private List<Foo>? Items { get; set; }
 
     /// <summary>
     /// 4
@@ -150,6 +157,17 @@ public partial class Floatings
 
     private JSModule<Floatings>? Module05 { get; set; }
 
+
+    /// <summary>
+    /// OnInitialized 方法
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Items = Foo.GenerateFoo(LocalizerFoo);
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -176,7 +194,10 @@ public partial class Floatings
     {
         if (Module05 != null)
         {
-            await Module05.DisposeAsync();
+            //不知道为什么不能释放
+            //await Module05.DisposeAsync();
+            await Task.Delay(3000);
+            Module05 = null;
         }
     }
 
