@@ -119,7 +119,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootstrapBlazor.AzureSpeech", "src\Extensions\Components\BootstrapBlazor.AzureSpeech\BootstrapBlazor.AzureSpeech.csproj", "{42108A8A-C773-4F35-A870-3673BDD383E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootstrapBlazor.BaiduSpeech", "src\Extensions\Components\BootstrapBlazor.BaiduSpeech\BootstrapBlazor.BaiduSpeech.csproj", "{4ED606D8-D252-4573-8F0F-B69502ADB7ED}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootstrapBlazor.Floating", "src\Extensions\Components\BootstrapBlazor.Floating\BootstrapBlazor.Floating.csproj", "{FB59177C-7004-4BC8-BD39-6B872A534E4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,10 +194,6 @@ Global
 		{4ED606D8-D252-4573-8F0F-B69502ADB7ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ED606D8-D252-4573-8F0F-B69502ADB7ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ED606D8-D252-4573-8F0F-B69502ADB7ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB59177C-7004-4BC8-BD39-6B872A534E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB59177C-7004-4BC8-BD39-6B872A534E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB59177C-7004-4BC8-BD39-6B872A534E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB59177C-7004-4BC8-BD39-6B872A534E4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -231,7 +226,6 @@ Global
 		{C28717F8-9D2B-4296-9CC4-94882338F370} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
 		{42108A8A-C773-4F35-A870-3673BDD383E4} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
 		{4ED606D8-D252-4573-8F0F-B69502ADB7ED} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
-		{FB59177C-7004-4BC8-BD39-6B872A534E4E} = {CD062AB6-244D-402A-8F33-C37DAC5856CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0DCB0756-34FA-4FD0-AE1D-D3F08B5B3A6B}

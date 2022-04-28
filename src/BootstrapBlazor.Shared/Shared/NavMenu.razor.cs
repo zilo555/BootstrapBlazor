@@ -997,7 +997,7 @@ public sealed partial class NavMenu
             },
             new()
             {
-                Text = "浮动控制 Floating",
+                Text = Localizer["Floating"],
                 Url = "floatings"
             }
         };
