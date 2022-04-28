@@ -1,0 +1,9 @@
+﻿@namespace BootstrapBlazor.Components
+@inherits BootstrapComponentBase
+
+<div id="@Id" class="@Class">
+	@foreach (var context in _contexts.Values)
+	{
+		<FloatingContent Context="@context" />
+	}
+</div>
