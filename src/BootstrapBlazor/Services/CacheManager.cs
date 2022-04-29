@@ -149,7 +149,7 @@ internal class CacheManager : ICacheManager
             // search in Localization
             var localizer = CreateLocalizerByType(t);
             var stringLocalizer = localizer?[fieldName];
-            if (stringLocalizer != null && !stringLocalizer.ResourceNotFound)
+            if (stringLocalizer is { ResourceNotFound: false })
             {
                 dn = stringLocalizer.Value;
             }
@@ -187,7 +187,7 @@ internal class CacheManager : ICacheManager
             // 显示名称为空时通过资源文件查找 FieldName 项
             var localizer = modelType.Assembly.IsDynamic ? null : CreateLocalizerByType(modelType);
             var stringLocalizer = localizer?[fieldName];
-            if (stringLocalizer != null && !stringLocalizer.ResourceNotFound)
+            if (stringLocalizer is { ResourceNotFound: false })
             {
                 dn = stringLocalizer.Value;
             }
@@ -218,6 +218,52 @@ internal class CacheManager : ICacheManager
         }
     }
 
+    public static IEnumerable<SelectedItem> GetNullableBoolItems(Type modelType, string fieldName)
+    {
+        var cacheKey = $"NullableBoolItems-{CultureInfo.CurrentUICulture.Name}-{modelType.FullName}-{fieldName}";
+        return Instance.GetOrCreate(cacheKey, entry =>
+        {
+            var items = new List<SelectedItem>();
+            var localizer = modelType.Assembly.IsDynamic ? null : CreateLocalizerByType(modelType);
+            IStringLocalizer? localizerAttr = null;
+            items.Add(new SelectedItem("", FindDisplayText(nameof(NullableBoolItemsAttribute.NullValueDisplayText), attr => attr.NullValueDisplayText)));
+            items.Add(new SelectedItem("True", FindDisplayText(nameof(NullableBoolItemsAttribute.TrueValueDisplayText), attr => attr.TrueValueDisplayText)));
+            items.Add(new SelectedItem("False", FindDisplayText(nameof(NullableBoolItemsAttribute.FalseValueDisplayText), attr => attr.FalseValueDisplayText)));
+            return items;
+
+            string FindDisplayText(string itemName, Func<NullableBoolItemsAttribute, string?> callback)
+            {
+                string? dn = null;
+
+                // 优先读取资源文件配置
+                var stringLocalizer = localizer?[$"{fieldName}-{itemName}"];
+                if (stringLocalizer is { ResourceNotFound: false })
+                {
+                    dn = stringLocalizer.Value;
+                }
+                else if (TryGetProperty(modelType, fieldName, out var propertyInfo))
+                {
+                    // 类资源文件未找到 回落查找标签
+                    var attr = propertyInfo.GetCustomAttribute<NullableBoolItemsAttribute>(true);
+                    if (attr != null && !modelType.Assembly.IsDynamic)
+                    {
+                        dn = callback(attr);
+                    }
+                }
+
+                // 回落读取 NullableBoolItemsAttribute 资源文件配置
+                return dn ?? FindDisplayTextByItemName(itemName);
+            }
+
+            string FindDisplayTextByItemName(string itemName)
+            {
+                localizerAttr ??= CreateLocalizerByType(typeof(NullableBoolItemsAttribute));
+                var stringLocalizer = localizerAttr![itemName];
+                return stringLocalizer.Value;
+            }
+        });
+    }
+
     /// <summary>
     /// 通过指定 Key 获取资源文件中的键值
     /// </summary>
@@ -230,13 +276,10 @@ internal class CacheManager : ICacheManager
         if (resxType.Value.ResourceManagerStringLocalizerType != null)
         {
             var localizer = CreateLocalizerByType(resxType.Value.ResourceManagerStringLocalizerType);
-            if (localizer != null)
+            var stringLocalizer = localizer?[key];
+            if (stringLocalizer is { ResourceNotFound: false })
             {
-                var stringLocalizer = localizer[key];
-                if (!stringLocalizer.ResourceNotFound)
-                {
-                    dn = stringLocalizer.Value;
-                }
+                dn = stringLocalizer.Value;
             }
         }
         return dn ?? key;
@@ -249,11 +292,11 @@ internal class CacheManager : ICacheManager
         var cacheKey = $"Placeholder-{CultureInfo.CurrentUICulture.Name}-{modelType.FullName}-{fieldName}";
         return Instance.GetOrCreate(cacheKey, entry =>
         {
-            string? ret = null;
             // 通过资源文件查找 FieldName 项
+            string? ret = null;
             var localizer = CreateLocalizerByType(modelType);
             var stringLocalizer = localizer?[$"{fieldName}.PlaceHolder"];
-            if (stringLocalizer != null && !stringLocalizer.ResourceNotFound)
+            if (stringLocalizer is { ResourceNotFound: false })
             {
                 ret = stringLocalizer.Value;
             }
@@ -497,7 +540,7 @@ public static class ICacheManagerExtensions
             var v = sections
                 .FirstOrDefault(kv => typeName.Equals(kv.Key, StringComparison.OrdinalIgnoreCase))?
                 .GetChildren()
-                .SelectMany(c => new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(c.Key, c.Value) });
+                .SelectMany(c => new[] { new KeyValuePair<string, string>(c.Key, c.Value) });
 
             return v ?? Enumerable.Empty<KeyValuePair<string, string>>();
         });
