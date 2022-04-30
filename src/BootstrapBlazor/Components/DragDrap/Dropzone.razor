@@ -23,8 +23,6 @@
         <div draggable="@IsItemDragable(item)"
              @ondragstart="() => OnDragStart(item)"
              @ondragend="@OnDragEnd"
-             @ondragenter="() => OnDragEnter(item)"
-             @ondragleave="@OnDragLeave"
              class="@GetItemClass(item) @ItemClass"
              style="@(item == null ? "display:none" : "")">
             @if (item != null)
