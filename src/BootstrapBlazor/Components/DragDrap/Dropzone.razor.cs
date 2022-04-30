@@ -84,6 +84,20 @@ public partial class Dropzone<TItem> : IDisposable
     [NotNull]
     private DragDropService<TItem>? DragDropService { get; set; }
 
+    private TItem? Item { get; set; }
+
+    private void SpacingEnter(TItem item)
+    {
+        DragDropService.ActiveSpacerId = Items.IndexOf(item) + 1;
+        Item = DragDropService.ActiveItem;
+    }
+
+    private void SpacingLeave()
+    {
+        DragDropService.ActiveSpacerId = null;
+        Item = default;
+    }
+
     private string? ItemClass => CssBuilder.Default()
         .AddClass("bb-dd-inprogess", DragDropService.ActiveItem != null)
         .Build();
@@ -209,6 +223,9 @@ public partial class Dropzone<TItem> : IDisposable
 
     private void OnDropItemOnSpacing(int newIndex)
     {
+        // drop时将拖动的Item清空
+        Item = default;
+
         if (!IsDropAllowed())
         {
             DragDropService.Reset();

@@ -33,7 +33,12 @@
 
         @if (MaxItems is null or > 1)
         {
-            <div @ondrop="()=>OnDropItemOnSpacing(Items.IndexOf(item)+1)" @ondrop:stopPropagation @ondragenter="()=>DragDropService.ActiveSpacerId = Items.IndexOf(item)+1" @ondragleave="()=>DragDropService.ActiveSpacerId = null" class="@ItemClass @GetClassesForSpacing(Items.IndexOf(item)+1)"></div>
+            <div @ondrop="() => OnDropItemOnSpacing(Items.IndexOf(item) + 1)" @ondrop:stopPropagation @ondragenter="()=>SpacingEnter(item)" @ondragleave="() => SpacingLeave()" class="@ItemClass @GetClassesForSpacing(Items.IndexOf(item) + 1)">
+                @if (Item is not null && DragDropService.ActiveSpacerId == Items.IndexOf(item) + 1)
+                {
+                    @ChildContent?.Invoke(Item)
+                }
+            </div>
         }
     }
 </div>
