@@ -84,20 +84,6 @@ public partial class Dropzone<TItem> : IDisposable
     [NotNull]
     private DragDropService<TItem>? DragDropService { get; set; }
 
-    private TItem? Item { get; set; }
-
-    private void SpacingEnter(TItem item)
-    {
-        DragDropService.ActiveSpacerId = Items.IndexOf(item) + 1;
-        Item = DragDropService.ActiveItem;
-    }
-
-    private void SpacingLeave()
-    {
-        DragDropService.ActiveSpacerId = null;
-        Item = default;
-    }
-
     private string? ItemClass => CssBuilder.Default()
         .AddClass("bb-dd-inprogess", DragDropService.ActiveItem != null)
         .Build();
@@ -136,27 +122,6 @@ public partial class Dropzone<TItem> : IDisposable
         if (AllowsDrag != null && !AllowsDrag(item))
         {
             builder.Append(" bb-dd-noselect");
-        }
-
-        return builder.ToString();
-    }
-
-    private string GetClassesForSpacing(int spacerId)
-    {
-        var builder = new StringBuilder();
-        builder.Append("bb-dd-spacing");
-        if (DragDropService.ActiveItem == null)
-        {
-            return builder.ToString();
-        }
-        //if active space id and item is from another dropzone -> always create insert space
-        if (DragDropService.ActiveSpacerId == spacerId && Items.IndexOf(DragDropService.ActiveItem) == -1)
-        {
-            builder.Append(" bb-dd-spacing-dragged-over");
-        } // else -> check if active space id and that it is an item that needs space
-        else if (DragDropService.ActiveSpacerId == spacerId && (spacerId != Items.IndexOf(DragDropService.ActiveItem)) && (spacerId != Items.IndexOf(DragDropService.ActiveItem) + 1))
-        {
-            builder.Append(" bb-dd-spacing-dragged-over");
         }
 
         return builder.ToString();
@@ -221,63 +186,16 @@ public partial class Dropzone<TItem> : IDisposable
         return DragDropService.ActiveItem != null;
     }
 
-    private void OnDropItemOnSpacing(int newIndex)
-    {
-        // drop时将拖动的Item清空
-        Item = default;
-
-        if (!IsDropAllowed())
-        {
-            DragDropService.Reset();
-            return;
-        }
-
-        var activeItem = DragDropService.ActiveItem;
-
-        bool sameDropZone = Equals(DragDropService.Items, Items);
-
-        if (CopyItem == null || sameDropZone)
-        {
-            Items.Insert(newIndex, activeItem!);
-            DragDropService.Commit();
-        }
-        else
-        {
-            // for the same zone - do not call CopyItem
-            Items.Insert(newIndex, CopyItem(activeItem!));
-            DragDropService.Reset();
-        }
-
-        //Operation is finished
-        OnItemDrop.InvokeAsync(activeItem!);
-    }
-
     private void OnDragStart(TItem item)
     {
         DragDropService.OldIndex = Items.IndexOf(item);
         DragDropService.ActiveItem = item;
         DragDropService.Items = Items;
-        Items.Remove(item);
-        if (DragDropService.OldIndex >= Items.Count)
-        {
-            Items.Add(default!);
-        }
     }
 
     private void OnDragEnd()
     {
-        if (DragDropService.Items != null)
-        {
-            if (DragDropService.OldIndex.HasValue)
-            {
-                if (DragDropService.ActiveItem != null)
-                {
-                    DragDropService.Items.Insert(DragDropService.OldIndex.Value, DragDropService.ActiveItem);
-                }
-            }
-            StateHasChanged();
-        }
-        Items.Remove(default!);
+
     }
 
     private void OnDragEnter(TItem? item)
@@ -292,6 +210,11 @@ public partial class Dropzone<TItem> : IDisposable
             return;
         }
 
+        if (Equals(activeItem, item))
+        {
+            return;
+        }
+
         if (IsMaxItemLimitReached())
         {
             return;
@@ -302,7 +225,20 @@ public partial class Dropzone<TItem> : IDisposable
             return;
         }
 
-        DragDropService.DragTargetItem = item;
+        var index = 0;
+        if (Equals(Items, DragDropService.Items) && DragDropService.OldIndex < Items.IndexOf(item))
+        {
+            index++;
+        }
+        DragDropService.Items?.Remove(activeItem);
+        index += Items.IndexOf(item);
+        Items.Insert(index, activeItem);
+        DragDropService.OldIndex = index;
+        if (!Equals(Items, DragDropService.Items))
+        {
+            DragDropService.StateHasChanged?.Invoke(this, EventArgs.Empty);
+            DragDropService.Items = Items;
+        }
 
         StateHasChanged();
     }
@@ -322,36 +258,6 @@ public partial class Dropzone<TItem> : IDisposable
         }
 
         var activeItem = DragDropService.ActiveItem;
-
-        // 如果没有释放在Item上，则添加到最后
-        if (DragDropService.DragTargetItem == null)
-        {
-            // 当从其他位置拖拽过来的时候
-            if (!Equals(DragDropService.Items, Items) && CopyItem != null)
-            {
-                Items.Insert(Items.Count, CopyItem(activeItem!));
-                DragDropService.Reset();
-            }
-            else
-            {
-                Items.Insert(Items.Count, activeItem!);
-                DragDropService.Commit();
-            }
-        }
-        else
-        {
-            OnReplacedItemDrop.InvokeAsync(DragDropService.DragTargetItem);
-            if (!Equals(DragDropService.Items, Items) && CopyItem != null)
-            {
-                Swap(DragDropService.DragTargetItem, CopyItem(activeItem!));
-                DragDropService.Reset();
-            }
-            else
-            {
-                Swap(DragDropService.DragTargetItem, activeItem!);
-                DragDropService.Commit();
-            }
-        }
 
         StateHasChanged();
         OnItemDrop.InvokeAsync(activeItem);
