@@ -225,6 +225,14 @@ public class FloatingTest : BootstrapBlazorTestBase
               pb.AddAttribute(1, nameof(FloatingContainer.Id), "Container3");
               pb.CloseComponent();
           }));
+
+        //容器自定义样式
+        var el = Context.RenderComponent<FloatingContainer>(pb =>
+          {
+              pb.Add(a => a.Class, "test-class");
+          });
+
+        Assert.Equal("test-class", el.Instance.Class);
     }
 
     [Fact]
