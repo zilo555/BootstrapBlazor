@@ -3,7 +3,13 @@
 
 @if (Context != null)
 {
-    <div @key="@Context.Id" @ref="@Context.Element" @attributes="@AdditionalAttributes" id="@Context.Id" style="@StyleClassString" class="@ClassString">
+    <div @key="@Context.Id"
+        @ref="@Context.Element"
+        id="@Context.Id"
+        style="@StyleClassString"
+        class="@ClassString"
+        role="tooltip"
+        data-floating-placement="@Context.State.Placement_">
 
         @Context.ChildContent
 
