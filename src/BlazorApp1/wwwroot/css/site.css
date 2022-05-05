@@ -1,0 +1,32 @@
+/* rounded image logout */
+header > div.dropdown.dropdown-logout > div > div.dropdown-item.dropdown-user > div > img,
+header > div.dropdown.dropdown-logout > a > img {
+    border-radius: 50%;
+}
+
+/* theme */
+.layout.is-page .layout-header {
+    background-color: #409eff;
+}
+
+.layout.is-page .layout-side .layout-banner {
+    background-color: #3e84d0
+}
+
+.layout.is-page .layout-side {
+    background-color: #212529;
+    color: #ebeef5;
+}
+
+.layout.is-page .layout-footer {
+    background-color: #343a40;
+}
+
+.layout.is-page .layout-header-bar {
+    background-color: #2b7cd0;
+    border-color: #014186;
+}
+
+.layout.is-page .layout-drawer:hover {
+    background-color: #3184dc;
+}
