@@ -256,10 +256,8 @@ public partial class Table<TItem>
     protected IEnumerable<IFilterAction> GetAdvanceSearchs()
     {
         var searchs = new List<IFilterAction>();
-        // 处理 SearchModel 条件
-        if (CustomerSearchModel == null && SearchModel != null)
+        if (ShowAdvancedSearch && CustomerSearchModel == null && SearchModel != null)
         {
-            // 处理 SearchModel
             var searchColumns = Columns.Where(i => i.Searchable);
             foreach (var property in SearchModel.GetType().GetProperties().Where(i => searchColumns.Any(col => col.GetFieldName() == i.Name)))
             {
@@ -279,11 +277,11 @@ public partial class Table<TItem>
     /// <returns></returns>
     protected IEnumerable<IFilterAction> GetSearchs()
     {
-        // 处理 SearchText
         var columns = Columns.Where(col => col.Searchable);
         var searchs = new List<IFilterAction>();
         if (!string.IsNullOrEmpty(SearchText))
         {
+            // TODO: only support string data type column
             searchs.AddRange(columns.Where(col => (Nullable.GetUnderlyingType(col.PropertyType) ?? col.PropertyType) == typeof(string)).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText)));
         }
         return searchs;
