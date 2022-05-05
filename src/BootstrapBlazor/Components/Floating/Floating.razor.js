@@ -36,7 +36,7 @@
             }
 
             if (reference == null) {
-                console.error("Reference not found.");
+                console.error(`Floating ${id} Reference not found.`);
                 return;
             }
 
@@ -48,8 +48,18 @@
                 config.middleware.push(FloatingUIDOM.offset(option.axisOffset));
             }
 
+            //设置自动放置，与自动翻动不能同时存在
+            if (option.placement == "auto") {
+                config.middleware.push(FloatingUIDOM.autoPlacement());
+            }
+            else if (option.placement == "auto-start") {
+                config.middleware.push(FloatingUIDOM.autoPlacement({ alignment: 'start'}));
+            }
+            else if (option.placement == "auto-end") {
+                config.middleware.push(FloatingUIDOM.autoPlacement({ alignment: 'end'}));
+            }
             //设置自动翻动来保持可见
-            if (option.useFlip) {
+            else if (option.useFlip) {
                 config.middleware.push(FloatingUIDOM.flip());
             }
 
@@ -107,6 +117,9 @@
                         if (floating.style.left == left && floating.style.top == top) {
                             return;
                         }
+
+                        //设置浮动位置
+                        floating.dataset.floatingPlacement = placement;
 
                         if (indicator != null) {
                             const p = placement.split('-')[0];
