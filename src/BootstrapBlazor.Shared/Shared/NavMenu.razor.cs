@@ -228,6 +228,12 @@ public sealed partial class NavMenu
             },
             new()
             {
+                IsNew = true,
+                Text = Localizer["Breakpoints"],
+                Url = "breakpoints"
+            },
+            new()
+            {
                 Text = Localizer["ZIndex"],
                 Url = "layout"
             },
@@ -962,13 +968,14 @@ public sealed partial class NavMenu
         {
             new()
             {
-                Text = Localizer["Dragdrop"],
-                Url = "dragdrops"
+                Text = Localizer["Divider"],
+                Url = "dividers"
             },
             new()
             {
-                Text = Localizer["Divider"],
-                Url = "dividers"
+                IsNew = true,
+                Text = Localizer["Dragdrop"],
+                Url = "dragdrops"
             },
             new()
             {
