@@ -28,7 +28,7 @@ internal sealed class FloatingContainerService : IDisposable
     {
         if (_containers.ContainsKey(container.Id))
         {
-            throw new DuplicateWaitObjectException(nameof(container));
+            throw new ArgumentException("A container instance with the same ID number already exists.", nameof(container));
         }
 
         _containers.Add(container.Id, container);
