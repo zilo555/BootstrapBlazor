@@ -938,11 +938,6 @@ public sealed partial class NavMenu
             },
             new()
             {
-                Text = Localizer["Navbar"],
-                Url = "navbars"
-            },
-            new()
-            {
                 Text = Localizer["Pagination"],
                 Url = "paginations"
             },
