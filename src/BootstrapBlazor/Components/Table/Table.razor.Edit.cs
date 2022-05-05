@@ -273,7 +273,7 @@ public partial class Table<TItem>
     {
         if (OnEditAsync != null)
         {
-            EditModel = SelectedRows[0];
+            EditModel = IsTracking ? SelectedRows[0] : Utility.Clone(SelectedRows[0]);
             await OnEditAsync(EditModel);
         }
         else
@@ -652,12 +652,6 @@ public partial class Table<TItem>
     {
         var context = new EditContext(EditModel);
         await SaveAsync(context, AddInCell ? ItemChangedType.Add : ItemChangedType.Update);
-
-        // 回调外部自定义方法
-        if (OnAfterSaveAsync != null)
-        {
-            await OnAfterSaveAsync(EditModel);
-        }
     }
 
     /// <summary>

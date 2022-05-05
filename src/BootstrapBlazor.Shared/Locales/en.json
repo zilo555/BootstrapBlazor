@@ -250,7 +250,8 @@
     "Desc15": "Collection of additional programs, passed to the Tab component for use",
     "Desc16": "Contract expand callback delegate",
     "Desc17": "Call back the delegate when the menu item is clicked",
-    "TabDefaultUrl": "Set the default url of Tab"
+    "TabDefaultUrl": "Set the default url of Tab",
+    "IsAccordion": "Whether to set the accordion menu"
   },
   "BootstrapBlazor.Shared.Samples.Footers": {
     "Title": "Footer",
@@ -426,7 +427,8 @@
     "ChartBubbleText": "Bubble",
     "DispatchText": "Dispatch",
     "GeolocationText": "Geolocation",
-    "Notification": "Notification",
+    "OnScreenKeyboardText": "OnScreenKeyboard",
+    "NotificationText": "Notification",
     "SignaturePadText": "SignaturePad"
   },
   "BootstrapBlazor.Shared.Samples.GlobalException": {
@@ -806,6 +808,7 @@
     "Att7": "Whether to turn on fuzzy matching",
     "Att8": "Whether case is ignored when matching",
     "Att9": "Custom collection filtering rules",
+    "Debounce": "Debounce interval default Zero",
     "SkipEnter": "Skip Enter key processing",
     "SkipEsc": "Skip Esc key processing",
     "OnSelectedItemChanged": "Callback for the selected item changed",
@@ -2054,6 +2057,7 @@
     "ColorIntro": "By setting, <code>The</code> makes the border and Body color appropriate",
     "CollapsibleTitle": "Collapsible",
     "CollapsibleIntro": "Card body can collapse/expand by set <code>IsCollapsible</code> to true",
+    "CollapsibleIntro2": "Set <code>Collapsed</code> value to <code>true</code> for default collapsed card body.",
     "CollapsibleBody": "Click card hader for collapse/expand card body",
     "ShadowTitle": "Shadow effect",
     "ShadowIntro": "Enable shadow effect by set <code>IsShadow</code> to true",
@@ -2065,6 +2069,7 @@
     "Color": "Set the color of the card border",
     "IsCenter": "Make align center by set IsCenter to true",
     "IsCollapsible": "Collapse card body by set IsCollapsible to true",
+    "Collapsed": "Collapsed by default",
     "IsShadow": "Add shadow effect by set IsShadow to true"
   },
   "BootstrapBlazor.Shared.Samples.Calendars": {
@@ -2829,7 +2834,8 @@
     "SpeechIntro": "Introduction",
     "Recognizer": "Recognizer",
     "Synthesizer": "Synthesizer",
-    "SpeechWave": "SpeechWave"
+    "SpeechWave": "SpeechWave",
+    "OnScreenKeyboard": "OnScreenKeyboard"
   },
   "BootstrapBlazor.Shared.Samples.Table.TablesFooter": {
     "Left": "Left",
@@ -2999,5 +3005,25 @@
     "TableRow4": "Reconnection rejected. The server was reached but refused the connection, and the user's state on the server is lost. To reload the app, call <code>location.reload()</code> in JavaScript. This connection state may result when:",
     "TableRow5": "<li>A crash in the server-side circuit occurs.</li><li>The client is disconnected long enough for the server to drop the user's state. Instances of the user's components are disposed.</li><li>The server is restarted, or the app's worker process is recycled.</li>",
     "Application": "Application"
+  },
+  "BootstrapBlazor.Shared.Samples.OnScreenKeyboards": {
+    "Title": "On-Screen keyboard",
+    "P1": "Precautions",
+    "P2": "This component relies on <a href='https://www.nuget.org/packages?q-BootstrapBlazor.OnScreenKeyboard' target'_blank'><code>BootstrapBlazor.OnScreenKeyboard</code></a>, which needs to reference its component package when using this component",
+    "P3": "Nuget package installation",
+    "P4": "Install the</code> components of <code>BootstrapBlazor.OnScreenKeyboard using <a href='https://www.nuget.org/packages?q-BootstrapBlazor.OnScreenKeyboard' target'_blank'>nuget.org</a>",
+    "BaseUsageText": "Basic usage",
+    "BlockKeyboardTypeAllTitle": "Full Keyboard",
+    "BlockKeyboardTypekeyboard": "Keyboard",
+    "BlockKeyboardTypeNumpadTitle": "Numpad",
+    "BlockKeyboardTypeSpanishTitle": "Spanish keyboard",
+    "BlockKeyboardThemeDarkTitle": "Theme dark",
+    "BlockSpecialcharactersTitle": "Special characters europe",
+    "BlockSpecialcharactersCustomerTitle": "Special characters in customer",
+    "BBUsageText": "BootstrapBlazor component",
+    "BBUsage2Text": "Bind",
+    "Tips": "If the performance is not normal, you can add this css to debug",
+    "P5": "<code> .kioskboard-body-padding { padding-top: unset !important;} </code>",
+    "P6": "Basic"
   }
 }

@@ -5,27 +5,23 @@
 namespace BootstrapBlazor.Components;
 
 /// <summary>
-/// DateTimePicker 组件视图显示模式
+/// 可为空布尔类型转换器
 /// </summary>
-public enum DatePickerViewMode
+[AttributeUsage(AttributeTargets.Property)]
+public class NullableBoolItemsAttribute : Attribute
 {
     /// <summary>
-    /// 年月日模式
+    /// 获得/设置 空值显示文本
     /// </summary>
-    Date,
+    public string? NullValueDisplayText { get; set; }
 
     /// <summary>
-    /// 年月日时分秒模式
+    /// 获得/设置 True 值显示文本
     /// </summary>
-    DateTime,
+    public string? TrueValueDisplayText { get; set; }
 
     /// <summary>
-    /// 年视图
+    /// 获得/设置 False 值显示文本
     /// </summary>
-    Year,
-
-    /// <summary>
-    /// 月视图
-    /// </summary>
-    Month
+    public string? FalseValueDisplayText { get; set; }
 }
