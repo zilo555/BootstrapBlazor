@@ -1,0 +1,17 @@
+﻿@namespace BootstrapBlazor.Components
+@inherits IdComponentBase
+
+<CascadingValue Value="@this" IsFixed>
+    <CascadingValue Value="@State">
+        @if ( State.Mode == NavbarMode.Horizontal && !IsBarDropdownSubmenu )
+        {
+            @ChildContent
+        }
+        else
+        {
+            <div id="@Id" class="@ClassString" @attributes="@AdditionalAttributes" data-visible="@VisibleString">
+                @ChildContent
+            </div>
+        }
+    </CascadingValue>
+</CascadingValue>
