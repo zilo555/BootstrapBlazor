@@ -224,6 +224,12 @@ public sealed partial class Floating : IAsyncDisposable
     private FloatingContainerService? Service { get; set; }
 
     /// <summary>
+    /// 获得 当前浮动配置项，用于单元测试
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    public string FloatingConfig => System.Text.Json.JsonSerializer.Serialize(State);
+
+    /// <summary>
     /// 获得/设置 是否使用容器渲染
     /// </summary>
     private bool UseContainer { get; set; }
@@ -433,6 +439,7 @@ public sealed partial class Floating : IAsyncDisposable
     /// <summary>
     /// Dispose 方法
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public async ValueTask DisposeAsync()
     {
         await DisposeAsyncCore(true);
