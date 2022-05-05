@@ -9,8 +9,26 @@ namespace BootstrapBlazor.Components;
 /// <summary>
 /// 浮动显示相关配置基类
 /// </summary>
-public class FloatingBase
+public abstract class FloatingBase
 {
+    /// <summary>
+    /// 获得/设置 浮动层显示时使用的定位模式，默认绝对定位
+    /// </summary>
+    [JsonIgnore]
+    public Position Position { get; set; } = Position.Absolute;
+
+    /// <summary>
+    /// 获得/设置 浮动位置，默认下方
+    /// </summary>
+    [JsonIgnore]
+    public Placement Placement { get; set; } = Placement.Bottom;
+
+    /// <summary>
+    /// 获得/设置 浮动层容器编号
+    /// </summary>
+    [JsonIgnore]
+    public string? ContainerId { get; set; }
+
     /// <summary>
     /// 获得/设置 浮动元素和参考元素之间的距离
     /// </summary>

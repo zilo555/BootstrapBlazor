@@ -17,27 +17,9 @@ internal class FloatingState : FloatingBase
     public bool Visible { get; set; }
 
     /// <summary>
-    /// 获得/设置 浮动层显示时使用的定位模式，默认绝对定位
-    /// </summary>
-    [JsonIgnore]
-    public Position Position { get; set; } = Position.Absolute;
-
-    /// <summary>
-    /// 获得/设置 浮动位置，默认右侧
-    /// </summary>
-    [JsonIgnore]
-    public Placement Placement { get; set; } = Placement.Bottom;
-
-    /// <summary>
     /// 获得/设置 锚点元素类型
     /// </summary>
     public FloatingCategory Category { get; set; } = FloatingCategory.Identifier;
-
-    /// <summary>
-    /// 获得/设置 浮动层容器编号
-    /// </summary>
-    [JsonIgnore]
-    public string? ContainerId { get; set; }
 
     /// <summary>
     /// 

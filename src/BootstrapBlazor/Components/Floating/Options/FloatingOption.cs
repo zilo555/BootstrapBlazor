@@ -37,22 +37,7 @@ public class FloatingOption: FloatingBase
     public Offset? Offset { get; set; }
 
     /// <summary>
-    /// 获得/设置 浮动层相对于它的锚点元素的位置
-    /// </summary>
-    public Placement Placement { get; set; }
-
-    /// <summary>
-    /// 获得/设置 浮动层显示时 使用的定位模式，默认绝对定位
-    /// </summary>
-    public Position Position { get; set; }
-
-    /// <summary>
     /// 获得/设置 内层子组件内容，为空时表示清除内容
     /// </summary>
     public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>
-    /// 获得/设置 浮动层渲染容器编号
-    /// </summary>
-    public string? ContainerId { get; set; }
 }
