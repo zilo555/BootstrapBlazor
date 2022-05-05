@@ -21,6 +21,15 @@ public sealed class FloatingContext
     /// <summary>
     /// 构造函数
     /// </summary>
+    private FloatingContext()
+    {
+        Id = Guid.NewGuid().ToString();
+        State = new();
+    }
+
+    /// <summary>
+    /// 构造函数
+    /// </summary>
     /// <param name="id"></param>
     /// <param name="fragment"></param>
     /// <param name="state"></param>
