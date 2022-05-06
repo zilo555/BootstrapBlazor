@@ -125,18 +125,23 @@
 
 <DemoBlock Title="@Localizer["BlockGroupTitle"]" Introduction="@Localizer["BlockGroupIntro"]" Name="Group">
     <div class="row g-3">
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-6 col-md-4">
             <BootstrapInputGroup>
-                <BootstrapInputGroupLabel DisplayText="@Localizer["BlockGroupTitleLabel"]" />
+                <BootstrapInputGroupLabel DisplayText="@Localizer["BlockGroupPrevLabel"]" />
                 <DateTimePicker TValue="DateTime" ViewMode="DatePickerViewMode.Date" />
-                <BootstrapInputGroupLabel DisplayText="km" />
             </BootstrapInputGroup>
         </div>
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-6 col-md-4">
             <BootstrapInputGroup>
-                <BootstrapInputGroupLabel DisplayText="Test" />
-                <BootstrapInput TValue="string" />
-                <BootstrapInputGroupLabel DisplayText="km" />
+                <DateTimePicker TValue="DateTime" ViewMode="DatePickerViewMode.Date" />
+                <BootstrapInputGroupLabel DisplayText="@Localizer["BlockGroupSuffixLabel"]" />
+            </BootstrapInputGroup>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+            <BootstrapInputGroup>
+                <BootstrapInputGroupLabel DisplayText="@Localizer["BlockGroupPrevLabel"]" />
+                <DateTimePicker TValue="DateTime" ViewMode="DatePickerViewMode.Date" />
+                <BootstrapInputGroupLabel DisplayText="@Localizer["BlockGroupSuffixLabel"]" />
             </BootstrapInputGroup>
         </div>
     </div>
