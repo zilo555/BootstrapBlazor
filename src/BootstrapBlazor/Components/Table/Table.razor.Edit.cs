@@ -25,6 +25,12 @@ public partial class Table<TItem>
     /// 
     /// </summary>
     [Parameter]
+    public Func<QueryPageOptions, Task<QueryPageOptions>>? BeforeOnQueryAsync { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Parameter]
     public EventCallback<List<TItem>> SelectedRowsChanged { get; set; }
 
     /// <summary>
@@ -454,6 +460,11 @@ public partial class Table<TItem>
             if (CustomerSearchModel != null)
             {
                 queryOption.SearchModel = CustomerSearchModel;
+            }
+
+            if (BeforeOnQueryAsync != null)
+            {
+                queryOption = await BeforeOnQueryAsync(queryOption);
             }
 
             queryData = await InternalOnQueryAsync(queryOption);
