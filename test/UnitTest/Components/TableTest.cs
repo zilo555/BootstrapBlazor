@@ -57,6 +57,21 @@ public class TableTest : TableTestBase
     }
 
     [Fact]
+    public void Table_Ok2()
+    {
+        var localizer = Context.Services.GetRequiredService<IStringLocalizer<Foo>>();
+        var cut = Context.RenderComponent<BootstrapBlazorRoot>(pb =>
+        {
+            pb.AddChildContent<Table<Foo>>(pb =>
+            {
+                pb.Add(a => a.Items, Foo.GenerateFoo(localizer));
+            });
+        });
+
+        cut.Contains("table");
+    }
+
+    [Fact]
     public void Table_Ok1()
     {
         var localizer = Context.Services.GetRequiredService<IStringLocalizer<Foo>>();
