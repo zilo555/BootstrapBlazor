@@ -2681,7 +2681,25 @@ public class TableTest : TableTestBase
     {
         var cut = Context.RenderComponent<TableColumn<Foo, string>>(pb =>
         {
-            pb.Add(a => a.EditTemplate, (RenderFragment<Foo>)null!);
+            pb.Add(a => a.EditTemplate, new RenderFragment<Foo>(foo => builder =>
+            {
+                builder.OpenElement(0, "div");
+                builder.AddContent(1, foo.Name);
+                builder.CloseElement();
+            }));
+        });
+
+        var col = cut.Instance as ITableColumn;
+        Assert.NotNull(col.EditTemplate);
+
+        var cut1 = Context.Render(new RenderFragment(builder =>
+        {
+            builder.OpenElement(0, "div");
+            builder.AddContent(1, col.EditTemplate!.Invoke(new Foo() { Name = "test-table-column" }));
+            builder.CloseElement();
+        }));
+        Assert.Contains("test-table-column", cut1.Markup);
+    }
         });
 
         var col = cut.Instance as ITableColumn;
