@@ -984,6 +984,12 @@ public sealed partial class NavMenu
             },
             new()
             {
+                IsNew = true,
+                Text = Localizer["Floating"],
+                Url = "floatings"
+            },
+            new()
+            {
                 Text = Localizer["Footer"],
                 Url = "footers"
             },
@@ -1006,11 +1012,6 @@ public sealed partial class NavMenu
             {
                 Text = Localizer["Split"],
                 Url = "splits"
-            },
-            new()
-            {
-                Text = Localizer["Floating"],
-                Url = "floatings"
             }
         };
         AddBadge(item);
