@@ -2700,10 +2700,31 @@ public class TableTest : TableTestBase
         }));
         Assert.Contains("test-table-column", cut1.Markup);
     }
+
+    [Fact]
+    public void TableColumn_SearchTemplate()
+    {
+        var cut = Context.RenderComponent<TableColumn<Foo, string>>(pb =>
+        {
+            pb.Add(a => a.SearchTemplate, new RenderFragment<Foo>(foo => builder =>
+            {
+                builder.OpenElement(0, "div");
+                builder.AddContent(1, foo.Name);
+                builder.CloseElement();
+            }));
         });
 
         var col = cut.Instance as ITableColumn;
-        Assert.Null(col.EditTemplate);
+        Assert.NotNull(col.SearchTemplate);
+
+        var cut1 = Context.Render(new RenderFragment(builder =>
+        {
+            builder.OpenElement(0, "div");
+            builder.AddContent(1, col.SearchTemplate!.Invoke(new Foo() { Name = "test-table-column" }));
+            builder.CloseElement();
+        }));
+        Assert.Contains("test-table-column", cut1.Markup);
+    }
     }
 
     private static Func<QueryPageOptions, Task<QueryData<Foo>>> OnQueryAsync(IStringLocalizer<Foo> localizer) => new(op =>
