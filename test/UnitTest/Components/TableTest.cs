@@ -2725,6 +2725,39 @@ public class TableTest : TableTestBase
         }));
         Assert.Contains("test-table-column", cut1.Markup);
     }
+
+    [Fact]
+    public void TableColumn_GetFieldName()
+    {
+        var cut = Context.RenderComponent<TableColumn<Foo, string>>(pb =>
+        {
+            pb.Add(a => a.FieldName, "Name");
+        });
+        var col = cut.Instance;
+        var v = col.GetFieldName();
+        Assert.Equal("Name", v);
+
+        cut.SetParametersAndRender(pb =>
+        {
+            pb.Add(a => a.FieldName, "");
+            pb.Add(a => a.Field, "Name");
+            pb.Add(a => a.FieldExpression, Utility.GenerateValueExpression(new Foo(), "Name", typeof(string)));
+        });
+        v = col.GetFieldName();
+        Assert.Equal("", v);
+    }
+
+    [Fact]
+    public void TableColumn_ComplexObject()
+    {
+        var cut = Context.RenderComponent<TableColumn<MockComplexFoo, string>>(pb =>
+        {
+            pb.Add(a => a.Field, "Foo.Name");
+            pb.Add(a => a.FieldExpression, Utility.GenerateValueExpression(new MockComplexFoo(), "Foo.Name", typeof(string)));
+        });
+        var col = cut.Instance;
+        var v = col.GetFieldName();
+        Assert.Equal("Name", v);
     }
 
     private static Func<QueryPageOptions, Task<QueryData<Foo>>> OnQueryAsync(IStringLocalizer<Foo> localizer) => new(op =>
@@ -2763,6 +2796,13 @@ public class TableTest : TableTestBase
         {
             Buttons.AddButton(this);
         }
+    }
+
+    private class MockComplexFoo
+    {
+        public string? Name { get; set; }
+
+        public Foo Foo { get; set; } = new Foo();
     }
 
     private class FooTree : Foo
