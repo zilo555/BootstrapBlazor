@@ -277,73 +277,71 @@ public partial class Table<TItem>
     /// <returns></returns>
     protected IEnumerable<IFilterAction> GetSearchs()
     {
-        // 处理 SearchText
         var columns = Columns.Where(col => col.Searchable);
         var searchs = new List<IFilterAction>();
-        if (!string.IsNullOrEmpty(SearchText))
+        if (!string.IsNullOrEmpty(SearchText)) Test(searchs, columns);
+        return searchs;
+    }
+
+    private void Test(List<IFilterAction> searchs, IEnumerable<ITableColumn> columns)
+    {
+        foreach (var col in columns)
         {
-            foreach (var col in columns)
+            var ret = new SearchFilterAction(col.GetFieldName(), null);
+            var type = Nullable.GetUnderlyingType(col.PropertyType) ?? col.PropertyType;
+            if (type == typeof(bool) && bool.TryParse(SearchText, out var @bool))
             {
-                var type = Nullable.GetUnderlyingType(col.PropertyType) ?? col.PropertyType;
-                if (type == typeof(string))
+                searchs.Add(new SearchFilterAction(col.GetFieldName(), @bool, FilterAction.Equal));
+            }
+            else if (type == typeof(string))
+            {
+                searchs.Add(new SearchFilterAction(col.GetFieldName(), SearchText));
+            }
+            else if (type == typeof(int) && int.TryParse(SearchText, out var @int))
+            {
+                searchs.Add(new SearchFilterAction(col.GetFieldName(), @int, FilterAction.Equal));
+            }
+            else if (type == typeof(long) && long.TryParse(SearchText, out var @long))
+            {
+                searchs.Add(new SearchFilterAction(col.GetFieldName(), @long, FilterAction.Equal));
+            }
+            else if (type == typeof(short))
+            {
+                var aa = short.TryParse(SearchText, out short res);
+                if (aa)
                 {
-                    searchs.Add(new SearchFilterAction(col.GetFieldName(), SearchText));
+                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
                 }
-                else if (type == typeof(int))
+            }
+            else if (type == typeof(double))
+            {
+                var aa = double.TryParse(SearchText, out double res);
+                if (aa)
                 {
-                    var aa = int.TryParse(SearchText, out int res);
-                    if (aa)
-                    {
-                        searchs.Add(new SearchFilterAction(col.GetFieldName(), res, FilterAction.Equal));
-                    }
+                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
                 }
-                else if (type == typeof(long))
+            }
+            else if (type == typeof(float))
+            {
+                var aa = float.TryParse(SearchText, out float res);
+                if (aa)
                 {
-                    var aa = long.TryParse(SearchText, out long res);
-                    if (aa)
-                    {
-                        searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                    }
+                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
                 }
-                else if (type == typeof(short))
+            }
+            else if (type == typeof(Enum))
+            {
+                var aa = Enum.TryParse(SearchText, out int res);
+                if (aa)
                 {
-                    var aa = short.TryParse(SearchText, out short res);
-                    if (aa)
-                    {
-                        searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                    }
+                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
                 }
-                else if (type == typeof(double))
+                else
                 {
-                    var aa = double.TryParse(SearchText, out double res);
-                    if (aa)
-                    {
-                        searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                    }
-                }
-                else if (type == typeof(float))
-                {
-                    var aa = float.TryParse(SearchText, out float res);
-                    if (aa)
-                    {
-                        searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                    }
-                }
-                else if (type == typeof(Enum))
-                {
-                    var aa = Enum.TryParse(SearchText, out int res);
-                    if (aa)
-                    {
-                        searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                    }
-                    else
-                    {
-                        searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText)));
-                    }
+                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText)));
                 }
             }
         }
-        return searchs;
     }
 
     /// <summary>
