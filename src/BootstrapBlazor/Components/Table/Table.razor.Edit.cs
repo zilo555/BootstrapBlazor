@@ -22,7 +22,7 @@ public partial class Table<TItem>
     public List<TItem> SelectedRows { get; set; } = new List<TItem>();
 
     /// <summary>
-    /// 
+    /// 获得/设置 选中行改变时的回调委托
     /// </summary>
     [Parameter]
     public Func<QueryPageOptions, Task<QueryPageOptions>>? BeforeOnQueryAsync { get; set; }
