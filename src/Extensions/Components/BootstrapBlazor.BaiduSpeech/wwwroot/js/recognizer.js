@@ -5,6 +5,7 @@ let handler;
 export function bb_baidu_speech_recognizeOnce(obj, beginRecognize, recognizeCallback) {
     var baidu_recognizer = function () {
         isStart = true;
+        Recorder.TrafficImgUrl = "";
         rec = new Recorder({ type: "wav", sampleRate: 16000, bitRate: 16 });
         rec.open(function () {
             rec.start();
@@ -37,5 +38,6 @@ export function bb_baidu_speech_close(obj, recognizerStatus, recognizeCallback) 
         }, msg => {
             obj.invokeMethodAsync(recognizeCallback, "Error", msg);
         });
+        Recorder.destroy();
     }
 };
