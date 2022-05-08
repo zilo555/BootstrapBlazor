@@ -14,4 +14,8 @@
     <PackageReference Include="Baidu.AI" Version="3.6.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BootstrapBlazor\BootstrapBlazor.csproj" />
+  </ItemGroup>
+
 </Project>

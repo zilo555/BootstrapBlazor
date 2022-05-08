@@ -9,7 +9,7 @@ export function bb_baidu_speech_recognizeOnce(obj, beginRecognize, recognizeCall
         rec.open(function () {
             rec.start();
             // 通知 UI 开始接收语音
-            obj.invokeMethodAsync(beginRecognize, "Start");
+            obj.invokeMethodAsync(beginRecognize);
             handler = setTimeout(function () {
                 bb_baidu_speech_close(obj, "Finished", recognizeCallback);
             }, 5000);
@@ -35,7 +35,7 @@ export function bb_baidu_speech_close(obj, recognizerStatus, recognizeCallback) 
                 obj.invokeMethodAsync(recognizeCallback, "Finished", value.value);
             });
         }, msg => {
-            obj.invokeMethodAsync(recognizeCallback, "Error", null);
+            obj.invokeMethodAsync(recognizeCallback, "Error", msg);
         });
     }
 };

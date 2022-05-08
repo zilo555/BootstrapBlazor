@@ -17,7 +17,7 @@ public class RecognizerOption
     /// <summary>
     /// 获得/设置 回调方法 默认 null
     /// </summary>
-    public Func<string, Task>? Callback { get; set; }
+    public Func<RecognizerStatus, string?, Task>? Callback { get; set; }
 
     /// <summary>
     /// 获得/设置 识别语音文化 默认 zh-CN
