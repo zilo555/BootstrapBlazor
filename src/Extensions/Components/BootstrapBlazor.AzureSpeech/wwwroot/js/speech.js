@@ -31,7 +31,7 @@ export function bb_azure_close_recognizer(obj, method) {
     if (recognizer != undefined) {
         recognizer.close();
     }
-    obj.invokeMethodAsync(method, '');
+    obj.invokeMethodAsync(method, "Close", '');
 }
 
 export function bb_azure_speech_synthesizerOnce(obj, method, token, region, synthesizerLanguage, voiceName, inputText) {
@@ -51,11 +51,6 @@ export function bb_azure_speech_synthesizerOnce(obj, method, token, region, synt
         synthesizer.speakTextAsync(
             inputText,
             function (result) {
-                //if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
-                //    console.log("synthesis finished for [" + inputText + "]");
-                //} else if (result.reason === SpeechSDK.ResultReason.Canceled) {
-                //    console.log("synthesis failed. Error detail: " + result.errorDetails);
-                //}
                 obj.invokeMethodAsync(method, "Synthesizer");
                 synthesizer.close();
                 synthesizer = undefined;
