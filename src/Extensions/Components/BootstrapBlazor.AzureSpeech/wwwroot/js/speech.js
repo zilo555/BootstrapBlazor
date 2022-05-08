@@ -11,12 +11,14 @@ export function bb_azure_speech_recognizeOnce(obj, method, token, region, recogn
         var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
         recognizer = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
 
+        obj.invokeMethodAsync(method, "Start", '');
         recognizer.recognizeOnceAsync(function (successfulResult) {
             recognizer.close();
             recognizer = undefined;
-            obj.invokeMethodAsync(method, successfulResult.privText);
+            obj.invokeMethodAsync(method, "Finished", successfulResult.privText);
         }, function (err) {
             console.log(err);
+            obj.invokeMethodAsync(method, "Error", err);
         });
 
     };
