@@ -275,74 +275,7 @@ public partial class Table<TItem>
     /// 通过列集合中的 <see cref="ITableColumn.Searchable"/> 列与 <see cref="SearchText"/> 拼装 IFilterAction 集合
     /// </summary>
     /// <returns></returns>
-    protected IEnumerable<IFilterAction> GetSearchs()
-    {
-        var columns = Columns.Where(col => col.Searchable);
-        var searchs = new List<IFilterAction>();
-        if (!string.IsNullOrEmpty(SearchText)) Test(searchs, columns);
-        return searchs;
-    }
-
-    private void Test(List<IFilterAction> searchs, IEnumerable<ITableColumn> columns)
-    {
-        foreach (var col in columns)
-        {
-            var ret = new SearchFilterAction(col.GetFieldName(), null);
-            var type = Nullable.GetUnderlyingType(col.PropertyType) ?? col.PropertyType;
-            if (type == typeof(bool) && bool.TryParse(SearchText, out var @bool))
-            {
-                searchs.Add(new SearchFilterAction(col.GetFieldName(), @bool, FilterAction.Equal));
-            }
-            else if (type == typeof(string))
-            {
-                searchs.Add(new SearchFilterAction(col.GetFieldName(), SearchText));
-            }
-            else if (type == typeof(int) && int.TryParse(SearchText, out var @int))
-            {
-                searchs.Add(new SearchFilterAction(col.GetFieldName(), @int, FilterAction.Equal));
-            }
-            else if (type == typeof(long) && long.TryParse(SearchText, out var @long))
-            {
-                searchs.Add(new SearchFilterAction(col.GetFieldName(), @long, FilterAction.Equal));
-            }
-            else if (type == typeof(short))
-            {
-                var aa = short.TryParse(SearchText, out short res);
-                if (aa)
-                {
-                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                }
-            }
-            else if (type == typeof(double))
-            {
-                var aa = double.TryParse(SearchText, out double res);
-                if (aa)
-                {
-                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                }
-            }
-            else if (type == typeof(float))
-            {
-                var aa = float.TryParse(SearchText, out float res);
-                if (aa)
-                {
-                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                }
-            }
-            else if (type == typeof(Enum))
-            {
-                var aa = Enum.TryParse(SearchText, out int res);
-                if (aa)
-                {
-                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText, FilterAction.Equal)));
-                }
-                else
-                {
-                    searchs.AddRange(columns.Where(col => col.Searchable).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText)));
-                }
-            }
-        }
-    }
+    protected IEnumerable<IFilterAction> GetSearchs() => Columns.Where(col => col.Searchable).ToSearchs(SearchText);
 
     /// <summary>
     /// 重置搜索按钮调用此方法
