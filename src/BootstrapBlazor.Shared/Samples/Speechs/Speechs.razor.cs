@@ -18,15 +18,15 @@ public partial class Speechs
     private VersionService? VersionManager { get; set; }
 
     [Inject]
-    [NotNull]
-    private IEnumerable<IRecognizerProvider>? RecognizerProviders { get; set; }
+    //[NotNull]
+    //private IEnumerable<IRecognizerProvider>? RecognizerProviders { get; set; }
 
     [NotNull]
     private IRecognizerProvider? RecognizerProvider { get; set; }
 
     [Inject]
-    [NotNull]
-    private IEnumerable<ISynthesizerProvider>? SynthesizerProviders { get; set; }
+    //[NotNull]
+    //private IEnumerable<ISynthesizerProvider>? SynthesizerProviders { get; set; }
 
     [NotNull]
     private ISynthesizerProvider? SynthesizerProvider { get; set; }
@@ -62,18 +62,18 @@ public partial class Speechs
 
     private void InitProvider()
     {
-        if (SpeechItem == "Azure")
-        {
-            NugetPackageName = "BootstrapBlazor.AzureSpeech";
-            RecognizerProvider = RecognizerProviders.OfType<AzureRecognizerProvider>().FirstOrDefault();
-            SynthesizerProvider = SynthesizerProviders.OfType<AzureSynthesizerProvider>().FirstOrDefault();
-        }
-        else
-        {
-            NugetPackageName = "BootstrapBlazor.BaiduSpeech";
-            RecognizerProvider = RecognizerProviders.OfType<BaiduRecognizerProvider>().FirstOrDefault();
-            SynthesizerProvider = SynthesizerProviders.OfType<BaiduSynthesizerProvider>().FirstOrDefault();
-        }
+        //if (SpeechItem == "Azure")
+        //{
+        //    NugetPackageName = "BootstrapBlazor.AzureSpeech";
+        //    RecognizerProvider = RecognizerProviders.OfType<AzureRecognizerProvider>().FirstOrDefault();
+        //    SynthesizerProvider = SynthesizerProviders.OfType<AzureSynthesizerProvider>().FirstOrDefault();
+        //}
+        //else
+        //{
+        //    NugetPackageName = "BootstrapBlazor.BaiduSpeech";
+        //    RecognizerProvider = RecognizerProviders.OfType<BaiduRecognizerProvider>().FirstOrDefault();
+        //    SynthesizerProvider = SynthesizerProviders.OfType<BaiduSynthesizerProvider>().FirstOrDefault();
+        //}
     }
 
     private Task OnSpeechProviderChanged(string value)
@@ -89,26 +89,26 @@ public partial class Speechs
         // 示例代码，由于注入两种语音服务 Baidu 语音晚于 Azure 内部服务注册 故默认获取的 语音提供服务均为 BaiduProvider 需要 手动构建
         // 实际生产中使用 Baidu 语音示例代码即可
 
-        if (SpeechItem == "Azure")
-        {
-            Show = true;
-        }
+        //if (SpeechItem == "Azure")
+        //{
+        //    Show = true;
+        //}
 
-        if (SpeechItem == "Azure")
-        {
-            await RecognizerProvider.AzureRecognizeOnceAsync(Recognizer);
-        }
-        else
-        {
-            await RecognizerProvider.BaiduRecognizeOnceAsync(Recognizer);
-        }
+        //if (SpeechItem == "Azure")
+        //{
+        //    await RecognizerProvider.AzureRecognizeOnceAsync(Recognizer);
+        //}
+        //else
+        //{
+        await RecognizerProvider.RecognizeOnceAsync(Recognizer);
+        //}
     }
 
-    private Task Recognizer(string result)
+    private Task Recognizer(RecognizerStatus status, string? result)
     {
         if (SpeechItem == "Baidu")
         {
-            if (result == RecognizerStatus.Start.ToString())
+            if (status == RecognizerStatus.Start)
             {
                 Show = true;
                 StateHasChanged();
@@ -118,11 +118,11 @@ public partial class Speechs
         Show = false;
         ConsoleMessages.Add(new ConsoleMessageItem()
         {
-            Message = result,
+            Message = result ?? "",
             Color = Color.Success
         });
 
-        ConfirmAction(result);
+        ConfirmAction(result ?? "");
         StateHasChanged();
         return Task.CompletedTask;
     }
@@ -132,14 +132,14 @@ public partial class Speechs
         if (CheckReceivedData(result))
         {
             var text = "您确认要把灯打开吗？请确认";
-            if (SpeechItem == "Azure")
-            {
-                SynthesizerInvokeAsync = SynthesizerProvider.AzureSynthesizerOnceAsync;
-            }
-            else
-            {
-                SynthesizerInvokeAsync = SynthesizerProvider.BaiduSynthesizerOnceAsync;
-            }
+            //if (SpeechItem == "Azure")
+            //{
+            //    SynthesizerInvokeAsync = SynthesizerProvider.AzureSynthesizerOnceAsync;
+            //}
+            //else
+            //{
+            SynthesizerInvokeAsync = SynthesizerProvider.SynthesizerOnceAsync;
+            //}
             await SynthesizerInvokeAsync(text, async status =>
             {
                 if (status == SynthesizerStatus.Synthesizer)
@@ -164,19 +164,19 @@ public partial class Speechs
         Show = true;
         await InvokeAsync(StateHasChanged);
 
-        if (SpeechItem == "Azure")
-        {
-            await RecognizerProvider.AzureRecognizeOnceAsync(Confirm);
-        }
-        else
-        {
-            await RecognizerProvider.BaiduRecognizeOnceAsync(Confirm);
-        }
+        //if (SpeechItem == "Azure")
+        //{
+        //    await RecognizerProvider.AzureRecognizeOnceAsync(Confirm);
+        //}
+        //else
+        //{
+        await RecognizerProvider.RecognizeOnceAsync(Confirm);
+        //}
     }).ConfigureAwait(false);
 
-    private async Task Confirm(string result)
+    private async Task Confirm(RecognizerStatus status, string? result)
     {
-        if (result == RecognizerStatus.Start.ToString())
+        if (status == RecognizerStatus.Start)
         {
             Show = true;
             StateHasChanged();
@@ -200,18 +200,18 @@ public partial class Speechs
                 Color = Color.Warning
             });
             await InvokeAsync(StateHasChanged);
-            if (SpeechItem == "Azure")
-            {
-                //模拟后台执行任务
-                await Task.Delay(2000);
-                SynthesizerInvokeAsync = SynthesizerProvider.AzureSynthesizerOnceAsync;
-            }
-            else
-            {
-                //模拟后台执行任务
-                await Task.Delay(2000);
-                SynthesizerInvokeAsync = SynthesizerProvider.BaiduSynthesizerOnceAsync;
-            }
+            //if (SpeechItem == "Azure")
+            //{
+            //    //模拟后台执行任务
+            //    await Task.Delay(2000);
+            //    SynthesizerInvokeAsync = SynthesizerProvider.AzureSynthesizerOnceAsync;
+            //}
+            //else
+            //{
+            //模拟后台执行任务
+            await Task.Delay(2000);
+            SynthesizerInvokeAsync = SynthesizerProvider.SynthesizerOnceAsync;
+            //}
 
             await SynthesizerInvokeAsync("已经为您打开", async status =>
             {

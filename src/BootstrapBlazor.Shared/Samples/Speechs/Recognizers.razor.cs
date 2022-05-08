@@ -12,10 +12,14 @@ namespace BootstrapBlazor.Shared.Samples;
 /// </summary>
 public partial class Recognizers
 {
-    [Inject]
-    [NotNull]
-    private IEnumerable<IRecognizerProvider>? RecognizerProviders { get; set; }
+    //[Inject]
+    //[NotNull]
+    //private IEnumerable<IRecognizerProvider>? RecognizerProviders { get; set; }
 
+    //[NotNull]
+    //private IRecognizerProvider? RecognizerProvider { get; set; }
+
+    [Inject]
     [NotNull]
     private IRecognizerProvider? RecognizerProvider { get; set; }
 
@@ -26,10 +30,10 @@ public partial class Recognizers
     private string ButtonText { get; set; } = "开始识别";
 
     [NotNull]
-    private Func<Func<string, Task>, Task>? RecognizerInvokeAsync { get; set; }
+    private Func<Func<RecognizerStatus, string?, Task>, Task>? RecognizerInvokeAsync { get; set; }
 
     [NotNull]
-    private Func<Func<string, Task>, Task>? CloseInvokeAsync { get; set; }
+    private Func<Func<RecognizerStatus, string?, Task>, Task>? CloseInvokeAsync { get; set; }
 
     /// <summary>
     /// OnInitialized 方法
@@ -41,18 +45,18 @@ public partial class Recognizers
 
     private void InitProvider()
     {
-        if (SpeechItem == "Azure")
-        {
-            RecognizerProvider = RecognizerProviders.OfType<AzureRecognizerProvider>().FirstOrDefault();
-            RecognizerInvokeAsync = RecognizerProvider.AzureRecognizeOnceAsync;
-            CloseInvokeAsync = RecognizerProvider.AzureCloseAsync;
-        }
-        else
-        {
-            RecognizerProvider = RecognizerProviders.OfType<BaiduRecognizerProvider>().FirstOrDefault();
-            RecognizerInvokeAsync = RecognizerProvider.BaiduRecognizeOnceAsync;
-            CloseInvokeAsync = RecognizerProvider.BaiduCloseAsync;
-        }
+        //if (SpeechItem == "Azure")
+        //{
+        //    RecognizerProvider = RecognizerProviders.OfType<AzureRecognizerProvider>().FirstOrDefault();
+        //    RecognizerInvokeAsync = RecognizerProvider.AzureRecognizeOnceAsync;
+        //    CloseInvokeAsync = RecognizerProvider.AzureCloseAsync;
+        //}
+        //else
+        //{
+        //RecognizerProvider = RecognizerProviders.OfType<BaiduRecognizerProvider>().FirstOrDefault();
+        RecognizerInvokeAsync = RecognizerProvider.RecognizeOnceAsync;
+        CloseInvokeAsync = RecognizerProvider.CloseAsync;
+        //}
     }
     private Task OnSpeechProviderChanged(string value)
     {
@@ -83,9 +87,9 @@ public partial class Recognizers
         await Close();
     }
 
-    private Task Recognize(string result)
+    private Task Recognize(RecognizerStatus status, string? result)
     {
-        if (SpeechItem == "Baidu" && result == RecognizerStatus.Start.ToString())
+        if (SpeechItem == "Baidu" && status == RecognizerStatus.Start)
         {
             Start = true;
             ButtonText = "结束识别";

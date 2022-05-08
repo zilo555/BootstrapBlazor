@@ -13,8 +13,8 @@ namespace BootstrapBlazor.Shared.Samples;
 public partial class Synthesizers
 {
     [Inject]
-    [NotNull]
-    private IEnumerable<ISynthesizerProvider>? SynthesizerProviders { get; set; }
+    //[NotNull]
+    //private IEnumerable<ISynthesizerProvider>? SynthesizerProviders { get; set; }
 
     [NotNull]
     private ISynthesizerProvider? SynthesizerProvider { get; set; }
@@ -39,14 +39,14 @@ public partial class Synthesizers
 
     private void InitProvider()
     {
-        if (SpeechItem == "Azure")
-        {
-            SynthesizerProvider = SynthesizerProviders.OfType<AzureSynthesizerProvider>().FirstOrDefault();
-        }
-        else
-        {
-            SynthesizerProvider = SynthesizerProviders.OfType<BaiduSynthesizerProvider>().FirstOrDefault();
-        }
+        //if (SpeechItem == "Azure")
+        //{
+        //    SynthesizerProvider = SynthesizerProviders.OfType<AzureSynthesizerProvider>().FirstOrDefault();
+        //}
+        //else
+        //{
+            //SynthesizerProvider = SynthesizerProviders.OfType<BaiduSynthesizerProvider>().FirstOrDefault();
+        //}
     }
 
     private Task OnSpeechProviderChanged(string value)
@@ -62,14 +62,14 @@ public partial class Synthesizers
         {
             IsDisabled = true;
             ButtonIcon = "fa fa-fw fa-spin fa-spinner";
-            if (SpeechItem == "Azure")
-            {
-                await SynthesizerProvider.AzureSynthesizerOnceAsync(InputText, Recognize);
-            }
-            else
-            {
-                await SynthesizerProvider.BaiduSynthesizerOnceAsync(InputText, Recognize);
-            }
+            //if (SpeechItem == "Azure")
+            //{
+            //    await SynthesizerProvider.AzureSynthesizerOnceAsync(InputText, Recognize);
+            //}
+            //else
+            //{
+                await SynthesizerProvider.SynthesizerOnceAsync(InputText, Recognize);
+            //}
         }
         else
         {
@@ -98,13 +98,13 @@ public partial class Synthesizers
 
     private async Task Close()
     {
-        if (SpeechItem == "Azure")
-        {
-            await SynthesizerProvider.AzureCloseAsync(Recognize);
-        }
-        else
-        {
-            await SynthesizerProvider.BaiduCloseAsync(Recognize);
-        }
+        //if (SpeechItem == "Azure")
+        //{
+        //    await SynthesizerProvider.AzureCloseAsync(Recognize);
+        //}
+        //else
+        //{
+            await SynthesizerProvider.CloseAsync(Recognize);
+        //}
     }
 }
